@@ -1,10 +1,10 @@
-#include "Simulation/Galaxy.h"
+#include "Simulation/SlimeMold.h"
 #include "OCSFW.h"
 
 int main()
 {
-	Galaxy simulation = Galaxy(2560, 1440);
-	OCSFW(&simulation, "Galaxy");
+	SlimeMold simulation = SlimeMold(1600, 900);
+	OCSFW(&simulation, "Slime Mold");
 
-	return EXIT_SUCCESS;
+	return 0;
 }

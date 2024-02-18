@@ -127,7 +127,7 @@
     <ClCompile Include="OCSFW\Source\Simulation\SimulationDrawer\SimulationTransforms\SimulationTransforms.cpp" />
     <ClCompile Include="OCSFW\Source\Simulation\SimulationMath\SimulationMath.cpp" />
     <ClCompile Include="Source\main.cpp" />
-    <ClCompile Include="Source\Shaders\PackedShaders.cpp" />
+    <ClCompile Include="Source\Simulation\SlimeMold.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="OCSFW\Libraries\include\glad\gl.h" />
@@ -174,6 +174,7 @@
     <ClInclude Include="OCSFW\Source\Simulation\SimulationDrawer\SimulationDrawer.h" />
     <ClInclude Include="OCSFW\Source\Simulation\SimulationDrawer\SimulationTransforms\SimulationTransforms.h" />
     <ClInclude Include="OCSFW\Source\Simulation\SimulationMath\SimulationMath.h" />
+    <ClInclude Include="Source\Simulation\SlimeMold.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="OCSFW\Libraries\lib\glfw3.lib" />
