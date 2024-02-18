@@ -1,0 +1,3 @@
+[submodule "Slime Mold/Slime Mold/OCSFW"]
+	path = Slime Mold/Slime Mold/OCSFW
+	url = https://github.com/psychopattt/OCSFW
