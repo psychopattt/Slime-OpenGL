@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{a297b28f-601a-49b8-bf98-10a13326cabe}</ProjectGuid>
+    <RootNamespace>Slime Mold</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(ProjectDir)Source;$(ProjectDir)OCSFW\Source;$(ProjectDir)OCSFW\Libraries\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)OCSFW\Libraries\lib;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)\Builds\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\Builds\Intermediate\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(ProjectDir)Source;$(ProjectDir)OCSFW\Source;$(ProjectDir)OCSFW\Libraries\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)OCSFW\Libraries\lib;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)\Builds\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\Builds\Intermediate\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>msvcrtd.lib</IgnoreSpecificDefaultLibraries>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="OCSFW\Libraries\include\glad\gl.c" />
+    <ClCompile Include="OCSFW\Libraries\include\imgui\imgui.cpp" />
+    <ClCompile Include="OCSFW\Libraries\include\imgui\imgui_demo.cpp" />
+    <ClCompile Include="OCSFW\Libraries\include\imgui\imgui_draw.cpp" />
+    <ClCompile Include="OCSFW\Libraries\include\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="OCSFW\Libraries\include\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="OCSFW\Libraries\include\imgui\imgui_tables.cpp" />
+    <ClCompile Include="OCSFW\Libraries\include\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="OCSFW\Source\Inputs\InputHandler.cpp" />
+    <ClCompile Include="OCSFW\Source\Inputs\KeyboardHandler\KeyboardHandler.cpp" />
+    <ClCompile Include="OCSFW\Source\Inputs\MouseHandler\MouseHandler.cpp" />
+    <ClCompile Include="OCSFW\Source\Interface\FpsCounter\FpsCounter.cpp" />
+    <ClCompile Include="OCSFW\Source\Interface\FpsLimiter\FpsLimiter.cpp" />
+    <ClCompile Include="OCSFW\Source\Interface\ImGui\ImGuiHandler\ImGuiHandler.cpp" />
+    <ClCompile Include="OCSFW\Source\Interface\ImGui\ImGuiHandler\ProggyRegular.cpp" />
+    <ClCompile Include="OCSFW\Source\Interface\ImGui\ImGuiWindow\ImGuiDebug\ImGuiDebug.cpp" />
+    <ClCompile Include="OCSFW\Source\Interface\ImGui\ImGuiWindow\ImGuiLog\ImGuiLog.cpp" />
+    <ClCompile Include="OCSFW\Source\Interface\ImGui\ImGuiWindow\ImGuiMain\ImGuiMain.cpp" />
+    <ClCompile Include="OCSFW\Source\Interface\ImGui\ImGuiWindow\ImGuiMetrics\ImGuiMetrics.cpp" />
+    <ClCompile Include="OCSFW\Source\Interface\Interface.cpp" />
+    <ClCompile Include="OCSFW\Source\Interface\InterfaceCallbacks.cpp" />
+    <ClCompile Include="OCSFW\Source\Interface\Viewport\Viewport.cpp" />
+    <ClCompile Include="OCSFW\Source\Interface\WindowTitle\WindowTitle.cpp" />
+    <ClCompile Include="OCSFW\Source\OCSFW.cpp" />
+    <ClCompile Include="OCSFW\Source\Settings\LogString\LogString.cpp" />
+    <ClCompile Include="OCSFW\Source\Shaders\Buffers\ComputeBuffer\ComputeBuffer.cpp" />
+    <ClCompile Include="OCSFW\Source\Shaders\Buffers\DualComputeBuffer\DualComputeBuffer.cpp" />
+    <ClCompile Include="OCSFW\Source\Shaders\Buffers\Texture\Texture.cpp" />
+    <ClCompile Include="OCSFW\Source\Shaders\ComputeShader\ComputeShader.cpp" />
+    <ClCompile Include="OCSFW\Source\Shaders\ShaderProvider\ShaderProvider.cpp" />
+    <ClCompile Include="OCSFW\Source\Shaders\Shader\Shader.cpp" />
+    <ClCompile Include="OCSFW\Source\Simulation\Simulation.cpp" />
+    <ClCompile Include="OCSFW\Source\Simulation\SimulationDrawer\SimulationDrawer.cpp" />
+    <ClCompile Include="OCSFW\Source\Simulation\SimulationDrawer\SimulationTransforms\SimulationTransforms.cpp" />
+    <ClCompile Include="OCSFW\Source\Simulation\SimulationMath\SimulationMath.cpp" />
+    <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\Shaders\PackedShaders.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="OCSFW\Libraries\include\glad\gl.h" />
+    <ClInclude Include="OCSFW\Libraries\include\GLFW\glfw3.h" />
+    <ClInclude Include="OCSFW\Libraries\include\GLFW\glfw3native.h" />
+    <ClInclude Include="OCSFW\Libraries\include\imgui\imconfig.h" />
+    <ClInclude Include="OCSFW\Libraries\include\imgui\imgui.h" />
+    <ClInclude Include="OCSFW\Libraries\include\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="OCSFW\Libraries\include\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="OCSFW\Libraries\include\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="OCSFW\Libraries\include\imgui\imgui_internal.h" />
+    <ClInclude Include="OCSFW\Libraries\include\imgui\imstb_rectpack.h" />
+    <ClInclude Include="OCSFW\Libraries\include\imgui\imstb_textedit.h" />
+    <ClInclude Include="OCSFW\Libraries\include\imgui\imstb_truetype.h" />
+    <ClInclude Include="OCSFW\Libraries\include\KHR\khrplatform.h" />
+    <ClInclude Include="OCSFW\Source\Inputs\InputHandler.h" />
+    <ClInclude Include="OCSFW\Source\Inputs\KeyboardHandler\KeyboardHandler.h" />
+    <ClInclude Include="OCSFW\Source\Inputs\MouseHandler\MouseHandler.h" />
+    <ClInclude Include="OCSFW\Source\Interface\FpsCounter\FpsCounter.h" />
+    <ClInclude Include="OCSFW\Source\Interface\FpsLimiter\FpsLimiter.h" />
+    <ClInclude Include="OCSFW\Source\Interface\ImGui\ImGuiHandler\ImGuiHandler.h" />
+    <ClInclude Include="OCSFW\Source\Interface\ImGui\ImGuiWindow\ImGuiDebug\ImGuiDebug.h" />
+    <ClInclude Include="OCSFW\Source\Interface\ImGui\ImGuiWindow\ImGuiLog\ImGuiLog.h" />
+    <ClInclude Include="OCSFW\Source\Interface\ImGui\ImGuiWindow\ImGuiMain\ImGuiMain.h" />
+    <ClInclude Include="OCSFW\Source\Interface\ImGui\ImGuiWindow\ImGuiMetrics\ImGuiMetrics.h" />
+    <ClInclude Include="OCSFW\Source\Interface\ImGui\ImGuiWindow\ImGuiWindow.h" />
+    <ClInclude Include="OCSFW\Source\Interface\Interface.h" />
+    <ClInclude Include="OCSFW\Source\Interface\Viewport\Viewport.h" />
+    <ClInclude Include="OCSFW\Source\Interface\WindowTitle\WindowTitle.h" />
+    <ClInclude Include="OCSFW\Source\OCSFW.h" />
+    <ClInclude Include="OCSFW\Source\Settings\ImGuiMenus.h" />
+    <ClInclude Include="OCSFW\Source\Settings\InputHandlers.h" />
+    <ClInclude Include="OCSFW\Source\Settings\LogString\LogString.h" />
+    <ClInclude Include="OCSFW\Source\Settings\MainSettings.h" />
+    <ClInclude Include="OCSFW\Source\Settings\TransformSettings.h" />
+    <ClInclude Include="OCSFW\Source\Settings\UpdateType.h" />
+    <ClInclude Include="OCSFW\Source\Shaders\Buffers\ComputeBuffer\ComputeBuffer.h" />
+    <ClInclude Include="OCSFW\Source\Shaders\Buffers\DualComputeBuffer\DualComputeBuffer.h" />
+    <ClInclude Include="OCSFW\Source\Shaders\Buffers\Texture\Texture.h" />
+    <ClInclude Include="OCSFW\Source\Shaders\ComputeShader\ComputeShader.h" />
+    <ClInclude Include="OCSFW\Source\Shaders\ShaderProvider\ShaderProvider.h" />
+    <ClInclude Include="OCSFW\Source\Shaders\Shader\Shader.h" />
+    <ClInclude Include="OCSFW\Source\Simulation\Simulation.h" />
+    <ClInclude Include="OCSFW\Source\Simulation\SimulationDrawer\SimulationDrawer.h" />
+    <ClInclude Include="OCSFW\Source\Simulation\SimulationDrawer\SimulationTransforms\SimulationTransforms.h" />
+    <ClInclude Include="OCSFW\Source\Simulation\SimulationMath\SimulationMath.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="OCSFW\Libraries\lib\glfw3.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="OCSFW\Libraries\lib\glfw3.pdb" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
