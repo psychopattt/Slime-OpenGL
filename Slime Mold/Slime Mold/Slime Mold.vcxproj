@@ -127,6 +127,8 @@
     <ClCompile Include="OCSFW\Source\Simulation\SimulationDrawer\SimulationTransforms\SimulationTransforms.cpp" />
     <ClCompile Include="OCSFW\Source\Simulation\SimulationMath\SimulationMath.cpp" />
     <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\Shaders\PackedShaders.cpp" />
+    <ClCompile Include="Source\Settings\SlimeCell.h" />
     <ClCompile Include="Source\Simulation\SlimeMold.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -175,12 +177,17 @@
     <ClInclude Include="OCSFW\Source\Simulation\SimulationDrawer\SimulationTransforms\SimulationTransforms.h" />
     <ClInclude Include="OCSFW\Source\Simulation\SimulationMath\SimulationMath.h" />
     <ClInclude Include="Source\Simulation\SlimeMold.h" />
+    <ClInclude Include="Source\Settings\SpeciesSettings.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="OCSFW\Libraries\lib\glfw3.lib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="OCSFW\Libraries\lib\glfw3.pdb" />
+    <None Include="Source\Shaders\Color.glsl" />
+    <None Include="Source\Shaders\Copy.glsl" />
+    <None Include="Source\Shaders\Diffuse.glsl" />
+    <None Include="Source\Shaders\Slime.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
