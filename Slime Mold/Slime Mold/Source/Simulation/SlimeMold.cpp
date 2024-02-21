@@ -17,6 +17,8 @@ SlimeMold::SlimeMold(int width, int height, unsigned int seed) :
 
 void SlimeMold::Initialize(int width, int height, unsigned int seed)
 {
+	Simulation::Initialize(width, height, seed);
+
 	InitializeTextures();
 	InitializeShaders();
 	InitializeSettings();
@@ -138,7 +140,7 @@ void SlimeMold::InitializeSlimeCells()
 
 void SlimeMold::Restart()
 {
-	
+	Simulation::Initialize();
 }
 
 void SlimeMold::Execute()
