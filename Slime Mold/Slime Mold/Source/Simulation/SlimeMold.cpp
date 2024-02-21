@@ -19,8 +19,8 @@ void SlimeMold::Initialize(int width, int height, unsigned int seed)
 {
 	InitializeTextures();
 	InitializeShaders();
+	InitializeSettings();
 	InitializeSlimeCells();
-	InitializeSpeciesSettings();
 	simDrawer = make_unique<SimulationDrawer>();
 }
 
@@ -37,7 +37,6 @@ void SlimeMold::InitializeShaders()
 	InitializeDiffuseShader();
 	InitializeColorShader();
 	InitializeCopyShader();
-	ApplyCellSettings();
 }
 
 void SlimeMold::InitializeSlimeShader()
@@ -74,8 +73,48 @@ void SlimeMold::InitializeCopyShader()
 	copyShader->SetTextureBinding("target", trailTexture->GetId());
 }
 
+void SlimeMold::InitializeSettings()
+{
+	for (int i = 0; i < 3; i++)
+		EnabledSpecies[i] = AllSpecies[i].enabled;
+
+	ApplySpeciesSettings();
+	ApplyCellSettings();
+}
+
+void SlimeMold::ApplySpeciesSettings()
+{
+	std::vector<SpeciesSettings> enabledSpecies;
+
+	for (int i = 0; i < 3; i++)
+	{
+		if (EnabledSpecies[i])
+			enabledSpecies.push_back(AllSpecies[i]);
+	}
+
+	enabledSpeciesCount = static_cast<unsigned int>(enabledSpecies.size());
+	speciesSettings = make_unique<ComputeBuffer>(enabledSpecies.data(), enabledSpeciesCount * sizeof(SpeciesSettings));
+	slimeShader->SetBufferBinding("speciesSettings", speciesSettings->GetId());
+
+	colorShader->SetBufferBinding("speciesSettings", speciesSettings->GetId());
+	colorShader->SetInt("speciesCount", enabledSpeciesCount);
+}
+
+void SlimeMold::ApplyCellSettings()
+{
+	slimeShader->SetFloat("trailWeight", SlimeMoldSettings::TrailWeight);
+	diffuseShader->SetFloat("diffuseRate", SlimeMoldSettings::DiffuseRate);
+	diffuseShader->SetFloat("decayRate", SlimeMoldSettings::DecayRate);
+}
+
 void SlimeMold::InitializeSlimeCells()
 {
+	if (enabledSpeciesCount == 0)
+	{
+		slimeShader->SetInt("slimeCellCount", 0);
+		return;
+	}
+
 	constexpr float tau = 6.2831853072f;
 	srand(static_cast<unsigned int>(time(nullptr)));
 	std::vector<SlimeCell> cells(SlimeMoldSettings::CellCount);
@@ -86,7 +125,7 @@ void SlimeMold::InitializeSlimeCells()
 		cells[i].position[1] = height / 2.0f;
 
 		cells[i].angle = static_cast<float>(rand()) / RAND_MAX * tau;
-		cells[i].speciesIndex = 0;
+		cells[i].speciesIndex = i % enabledSpeciesCount;
 
 		for (int j = 0; j < 3; j++)
 			cells[i].speciesMask[j] = static_cast<float>(cells[i].speciesIndex == j);
@@ -95,32 +134,6 @@ void SlimeMold::InitializeSlimeCells()
 	slimeCells = make_unique<ComputeBuffer>(cells.data(), cells.size() * sizeof(SlimeCell));
 	slimeShader->SetInt("slimeCellCount", static_cast<unsigned int>(cells.size()));
 	slimeShader->SetBufferBinding("slimeCells", slimeCells->GetId());
-}
-
-void SlimeMold::InitializeSpeciesSettings()
-{
-	std::vector<SpeciesSettings> settings(1);
-	settings[0].moveSpeed = 20;
-	settings[0].turnSpeed = 2;
-	settings[0].sensorSize = 1;
-	settings[0].sensorOffset = 35;
-	settings[0].sensorAngleDegrees = 30;
-	settings[0].color[0] = 1;
-	settings[0].color[1] = 1;
-	settings[0].color[2] = 1;
-
-	speciesSettings = make_unique<ComputeBuffer>(settings.data(), settings.size() * sizeof(SpeciesSettings));
-	slimeShader->SetBufferBinding("speciesSettings", speciesSettings->GetId());
-
-	colorShader->SetBufferBinding("speciesSettings", speciesSettings->GetId());
-	colorShader->SetInt("speciesCount", static_cast<unsigned int>(settings.size()));
-}
-
-void SlimeMold::ApplyCellSettings()
-{
-	slimeShader->SetFloat("trailWeight", SlimeMoldSettings::TrailWeight);
-	diffuseShader->SetFloat("diffuseRate", SlimeMoldSettings::DiffuseRate);
-	diffuseShader->SetFloat("decayRate", SlimeMoldSettings::DecayRate);
 }
 
 void SlimeMold::Restart()

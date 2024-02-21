@@ -15,6 +15,7 @@ class SlimeMold : public Simulation
 	public:
 		SlimeMold(int width, int height, unsigned int seed = 0);
 		void Initialize(int width, int height, unsigned int seed = 0) override;
+		void ApplySpeciesSettings();
 		void ApplyCellSettings();
 		void Restart() override;
 		void Execute() override;
@@ -23,6 +24,7 @@ class SlimeMold : public Simulation
 
 	private:
 		bool simUpdated = false;
+		unsigned int enabledSpeciesCount = 1;
 
 		unique_ptr<ComputeShader> slimeShader;
 		unique_ptr<ComputeShader> diffuseShader;
@@ -44,6 +46,6 @@ class SlimeMold : public Simulation
 		void InitializeDiffuseShader();
 		void InitializeColorShader();
 		void InitializeCopyShader();
+		void InitializeSettings();
 		void InitializeSlimeCells();
-		void InitializeSpeciesSettings();
 };

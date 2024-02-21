@@ -1,3 +1,5 @@
+#pragma once
+
 struct SlimeCell
 {
 	float position[2];

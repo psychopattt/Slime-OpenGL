@@ -15,7 +15,7 @@ void SlimeCellsMenu::Render()
 	if (!SlimeMoldSettings::ShowCellSettings)
 		return;
 
-	SetNextWindowPos(ImVec2(270, 220), ImGuiCond_FirstUseEver);
+	SetNextWindowPos(ImVec2(591, 10), ImGuiCond_FirstUseEver);
 	SetNextWindowSize(ImVec2(200, -1), ImGuiCond_FirstUseEver);
 
 	if (Begin("Cell Settings", &SlimeMoldSettings::ShowCellSettings))
