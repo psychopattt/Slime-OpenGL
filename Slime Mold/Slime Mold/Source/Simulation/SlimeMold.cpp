@@ -37,13 +37,13 @@ void SlimeMold::InitializeShaders()
 	InitializeDiffuseShader();
 	InitializeColorShader();
 	InitializeCopyShader();
+	ApplyCellSettings();
 }
 
 void SlimeMold::InitializeSlimeShader()
 {
 	slimeShader = make_unique<ComputeShader>("Slime", SlimeMoldSettings::CellCount, 1);
 	slimeShader->SetTextureBinding("trailTexture", trailTexture->GetId());
-	slimeShader->SetFloat("trailWeight", SlimeMoldSettings::TrailWeight);
 	slimeShader->SetInt("height", height);
 	slimeShader->SetInt("width", width);
 	slimeShader->SetInt("seed", seed);
@@ -54,8 +54,6 @@ void SlimeMold::InitializeDiffuseShader()
 	diffuseShader = make_unique<ComputeShader>("Diffuse", width, height);
 	diffuseShader->SetTextureBinding("trailTexture", trailTexture->GetId());
 	diffuseShader->SetTextureBinding("diffusedTrailTexture", diffusedTrailTexture->GetId());
-	diffuseShader->SetFloat("diffuseRate", SlimeMoldSettings::DiffuseRate);
-	diffuseShader->SetFloat("decayRate", SlimeMoldSettings::DecayRate);
 	diffuseShader->SetInt("height", height);
 	diffuseShader->SetInt("width", width);
 }
@@ -116,6 +114,13 @@ void SlimeMold::InitializeSpeciesSettings()
 
 	colorShader->SetBufferBinding("speciesSettings", speciesSettings->GetId());
 	colorShader->SetInt("speciesCount", static_cast<unsigned int>(settings.size()));
+}
+
+void SlimeMold::ApplyCellSettings()
+{
+	slimeShader->SetFloat("trailWeight", SlimeMoldSettings::TrailWeight);
+	diffuseShader->SetFloat("diffuseRate", SlimeMoldSettings::DiffuseRate);
+	diffuseShader->SetFloat("decayRate", SlimeMoldSettings::DecayRate);
 }
 
 void SlimeMold::Restart()
