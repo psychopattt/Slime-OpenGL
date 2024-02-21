@@ -4,6 +4,7 @@
 
 #include "Settings/SlimeCell.h"
 #include "Settings/SpeciesSettings.h"
+#include "Settings/SlimeMoldSettings.h"
 #include "Shaders/Buffers/Texture/Texture.h"
 #include "Shaders/ComputeShader/ComputeShader.h"
 #include "Shaders/Buffers/ComputeBuffer/ComputeBuffer.h"
@@ -40,9 +41,9 @@ void SlimeMold::InitializeShaders()
 
 void SlimeMold::InitializeSlimeShader()
 {
-	slimeShader = make_unique<ComputeShader>("Slime", 100, 1);
+	slimeShader = make_unique<ComputeShader>("Slime", SlimeMoldSettings::CellCount, 1);
 	slimeShader->SetTextureBinding("trailTexture", trailTexture->GetId());
-	slimeShader->SetFloat("trailWeight", 80);
+	slimeShader->SetFloat("trailWeight", SlimeMoldSettings::TrailWeight);
 	slimeShader->SetInt("height", height);
 	slimeShader->SetInt("width", width);
 	slimeShader->SetInt("seed", seed);
@@ -53,8 +54,8 @@ void SlimeMold::InitializeDiffuseShader()
 	diffuseShader = make_unique<ComputeShader>("Diffuse", width, height);
 	diffuseShader->SetTextureBinding("trailTexture", trailTexture->GetId());
 	diffuseShader->SetTextureBinding("diffusedTrailTexture", diffusedTrailTexture->GetId());
-	diffuseShader->SetFloat("diffuseRate", 1);
-	diffuseShader->SetFloat("decayRate", 1);
+	diffuseShader->SetFloat("diffuseRate", SlimeMoldSettings::DiffuseRate);
+	diffuseShader->SetFloat("decayRate", SlimeMoldSettings::DecayRate);
 	diffuseShader->SetInt("height", height);
 	diffuseShader->SetInt("width", width);
 }
@@ -79,7 +80,7 @@ void SlimeMold::InitializeSlimeCells()
 {
 	constexpr float tau = 6.2831853072f;
 	srand(static_cast<unsigned int>(time(nullptr)));
-	std::vector<SlimeCell> cells(100);
+	std::vector<SlimeCell> cells(SlimeMoldSettings::CellCount);
 
 	for (int i = 0; i < cells.size(); i++)
 	{

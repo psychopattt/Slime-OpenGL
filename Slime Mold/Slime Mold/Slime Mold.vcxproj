@@ -126,9 +126,11 @@
     <ClCompile Include="OCSFW\Source\Simulation\SimulationDrawer\SimulationDrawer.cpp" />
     <ClCompile Include="OCSFW\Source\Simulation\SimulationDrawer\SimulationTransforms\SimulationTransforms.cpp" />
     <ClCompile Include="OCSFW\Source\Simulation\SimulationMath\SimulationMath.cpp" />
+    <ClCompile Include="Source\Interface\SlimeCellsMenu\SlimeCellsMenu.cpp" />
+    <ClCompile Include="Source\Interface\SlimeMoldMenu\SlimeMoldMenu.cpp" />
+    <ClCompile Include="Source\Interface\SlimeSpeciesMenu\SlimeSpeciesMenu.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Shaders\PackedShaders.cpp" />
-    <ClCompile Include="Source\Settings\SlimeCell.h" />
     <ClCompile Include="Source\Simulation\SlimeMold.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -176,6 +178,11 @@
     <ClInclude Include="OCSFW\Source\Simulation\SimulationDrawer\SimulationDrawer.h" />
     <ClInclude Include="OCSFW\Source\Simulation\SimulationDrawer\SimulationTransforms\SimulationTransforms.h" />
     <ClInclude Include="OCSFW\Source\Simulation\SimulationMath\SimulationMath.h" />
+    <ClInclude Include="Source\Interface\SlimeCellsMenu\SlimeCellsMenu.h" />
+    <ClInclude Include="Source\Interface\SlimeMoldMenu\SlimeMoldMenu.h" />
+    <ClInclude Include="Source\Interface\SlimeSpeciesMenu\SlimeSpeciesMenu.h" />
+    <ClInclude Include="Source\Settings\SlimeCell.h" />
+    <ClInclude Include="Source\Settings\SlimeMoldSettings.h" />
     <ClInclude Include="Source\Simulation\SlimeMold.h" />
     <ClInclude Include="Source\Settings\SpeciesSettings.h" />
   </ItemGroup>

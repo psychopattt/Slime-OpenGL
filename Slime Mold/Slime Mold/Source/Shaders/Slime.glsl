@@ -42,8 +42,7 @@ layout(RGBA32F) restrict uniform image2D trailTexture;
 uniform uint seed;
 uniform float time;
 const float globalSpeed = 0.02;
-const float pi = 3.1415926536;
-const float tau = 2 * pi;
+const float tau = 6.2831853072;
 
 uint Random(uint state)
 {
