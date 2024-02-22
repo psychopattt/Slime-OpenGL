@@ -28,10 +28,10 @@ void SlimeSpeciesMenu::Render()
 
 		if (BeginTabBar("Species"))
 		{
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < AllSpecies.size(); i++)
 				RenderSpeciesTab(i);
 
-			UpdateSpeciesSettings();
+			UpdateSettings();
 			EndTabBar();
 		}
 
@@ -54,8 +54,12 @@ void SlimeSpeciesMenu::RenderSpeciesTab(int speciesId)
 		if (!species->enabled)
 			BeginDisabled();
 
+		RenderParameterDrag("Cell Count", species->cellCount, 1, INT32_MAX);
 		RenderParameterDrag("Move Speed", species->moveSpeed, 0, 500);
 		RenderParameterDrag("Turn Speed", species->turnSpeed, 0, 20);
+		RenderParameterDrag("Trail Weight", species->trailWeight, 0, 50);
+		RenderParameterDrag("Diffuse Rate", SlimeMoldSettings::DiffuseRate, 0, 50);
+		RenderParameterDrag("Decay Rate", SlimeMoldSettings::DecayRate, 0, 50);
 		RenderParameterSlider("Sensors Size", species->sensorSize, 1, 10);
 		RenderParameterDrag("Sensors Offset", species->sensorOffset, 0, 500);
 		RenderParameterDrag("Sensors Angle", species->sensorAngleDegrees, 0, 180);
@@ -83,6 +87,17 @@ void SlimeSpeciesMenu::RenderParameterSlider(string label, int& parameter, int m
 	) || changesPending;
 }
 
+void SlimeSpeciesMenu::RenderParameterDrag(string label, int& parameter, int min, int max)
+{
+	SeparatorText(label.c_str());
+	string id = "##drag" + label;
+
+	changesPending = DragInt(
+		id.c_str(), &parameter, 1, min, max,
+		"%d", ImGuiSliderFlags_AlwaysClamp
+	) || changesPending;
+}
+
 void SlimeSpeciesMenu::RenderParameterDrag(string label, float& parameter, float min, float max)
 {
 	SeparatorText(label.c_str());
@@ -94,12 +109,12 @@ void SlimeSpeciesMenu::RenderParameterDrag(string label, float& parameter, float
 	) || changesPending;
 }
 
-void SlimeSpeciesMenu::UpdateSpeciesSettings()
+void SlimeSpeciesMenu::UpdateSettings()
 {
 	if (changesPending)
 	{
 		SlimeMold* slimeSim = reinterpret_cast<SlimeMold*>(MainSettings::Sim);
-		slimeSim->ApplySpeciesSettings();
+		slimeSim->ApplyShaderSettings();
 		changesPending = false;
 	}
 }

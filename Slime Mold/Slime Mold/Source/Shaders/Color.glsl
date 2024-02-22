@@ -12,6 +12,8 @@ struct SpeciesSettings
     int sensorSize;
     float sensorOffset;
     float sensorAngleDegrees;
+
+    float trailWeight;
 };
 
 uniform uint speciesCount;

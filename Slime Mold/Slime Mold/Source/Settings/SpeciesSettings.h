@@ -13,15 +13,16 @@ struct SpeciesSettings
 	float sensorOffset;
 	float sensorAngleDegrees;
 
-	bool enabled;
+	float trailWeight;
 
-	float padding[2];
+	int cellCount;
+	bool enabled;
 };
 
 inline std::array<SpeciesSettings, 3> AllSpecies = {
-	SpeciesSettings({ 1, 1, 1, 0 }, 20, 2, 1, 35, 30, true),
-	SpeciesSettings({ 1, 0, 0, 0 }, 20, 2, 1, 35, 30, false),
-	SpeciesSettings({ 0, 1, 0, 0 }, 20, 2, 1, 35, 30, false)
+	SpeciesSettings({ 1, 1, 1, 0 }, 20, 2, 1, 35, 30, 10, 100, true),
+	SpeciesSettings({ 1, 0, 0, 0 }, 20, 2, 1, 35, 30, 10, 100, false),
+	SpeciesSettings({ 0, 1, 0, 0 }, 20, 2, 1, 35, 30, 10, 100, false)
 };
 
 inline std::array<bool, 3> EnabledSpecies;

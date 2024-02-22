@@ -17,6 +17,7 @@ class SlimeSpeciesMenu : public ImGuiWindow
 
 		void RenderSpeciesTab(int speciesId);
 		void RenderParameterSlider(string label, int& parameter, int min, int max);
+		void RenderParameterDrag(string label, int& parameter, int min, int max);
 		void RenderParameterDrag(string label, float& parameter, float min, float max);
-		void UpdateSpeciesSettings();
+		void UpdateSettings();
 };

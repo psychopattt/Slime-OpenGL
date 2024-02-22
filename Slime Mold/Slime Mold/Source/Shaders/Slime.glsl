@@ -21,6 +21,8 @@ struct SpeciesSettings
     int sensorSize;
     float sensorOffset;
     float sensorAngleDegrees;
+
+    float trailWeight;
 };
 
 layout(std430) restrict readonly buffer speciesSettings
@@ -36,7 +38,6 @@ layout(std430) restrict buffer slimeCells
 
 uniform int width;
 uniform int height;
-uniform float trailWeight;
 layout(RGBA32F) restrict uniform image2D trailTexture;
 
 uniform uint seed;
@@ -135,7 +136,7 @@ void MoveCell(uint cellId, uint random)
     {
         ivec2 newTrailCoords = ivec2(newPos);
         vec4 oldTrailData = imageLoad(trailTexture, newTrailCoords);
-        vec4 newTrailData = min(vec4(1), oldTrailData + cell.speciesMask * trailWeight * globalSpeed);
+        vec4 newTrailData = min(vec4(1), oldTrailData + cell.speciesMask * cellSettings.trailWeight * globalSpeed);
         imageStore(trailTexture, newTrailCoords, newTrailData);
     }
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
 #include "Simulation/Simulation.h"
 
@@ -15,8 +16,7 @@ class SlimeMold : public Simulation
 	public:
 		SlimeMold(int width, int height, unsigned int seed = 0);
 		void Initialize(int width, int height, unsigned int seed = 0) override;
-		void ApplySpeciesSettings();
-		void ApplyCellSettings();
+		void ApplyShaderSettings();
 		void Restart() override;
 		void Execute() override;
 		void Draw() override;
@@ -24,6 +24,7 @@ class SlimeMold : public Simulation
 
 	private:
 		bool simUpdated = false;
+		unsigned int totalCells = 0;
 		unsigned int enabledSpeciesCount = 1;
 
 		unique_ptr<ComputeShader> slimeShader;
@@ -40,12 +41,13 @@ class SlimeMold : public Simulation
 
 		unique_ptr<class SimulationDrawer> simDrawer;
 
+		void InitializeSettings();
 		void InitializeTextures();
 		void InitializeShaders();
 		void InitializeSlimeShader();
 		void InitializeDiffuseShader();
 		void InitializeColorShader();
 		void InitializeCopyShader();
-		void InitializeSettings();
 		void InitializeSlimeCells();
+		void InitializeCellSpecies(std::vector<struct SlimeCell>& slimeCells, int speciesId) const;
 };

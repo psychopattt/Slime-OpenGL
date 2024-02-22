@@ -2,7 +2,6 @@
 #include "OCSFW.h"
 
 #include "Interface/SlimeMoldMenu/SlimeMoldMenu.h"
-#include "Interface/SlimeCellsMenu/SlimeCellsMenu.h"
 #include "Interface/SlimeSpeciesMenu/SlimeSpeciesMenu.h"
 
 int main()
@@ -10,9 +9,8 @@ int main()
 	SlimeMold simulation = SlimeMold(1280, 720);
 
 	SlimeMoldMenu moldMenu = SlimeMoldMenu();
-	SlimeCellsMenu cellsMenu = SlimeCellsMenu();
 	SlimeSpeciesMenu speciesMenu = SlimeSpeciesMenu();
-	ImGuiWindow* menus[] = { &moldMenu, &cellsMenu, &speciesMenu };
+	ImGuiWindow* menus[] = { &moldMenu, &speciesMenu };
 
 	OCSFW(&simulation, "Slime Mold", nullptr, nullptr, menus, std::size(menus));
 

@@ -12,7 +12,6 @@ void SlimeMoldMenu::Render()
 	{
 		if (CollapsingHeader("Slime Mold"))
 		{
-			Checkbox("Show Cells Menu", &SlimeMoldSettings::ShowCellSettings);
 			Checkbox("Show Species Menu", &SlimeMoldSettings::ShowSpeciesSettings);
 		}
 	}
