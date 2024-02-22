@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#include "glad/gl.h"
+
 #include "Settings/SlimeCell.h"
 #include "Settings/SpeciesSettings.h"
 #include "Settings/SlimeMoldSettings.h"
@@ -11,6 +13,12 @@
 #include "Simulation/SimulationDrawer/SimulationDrawer.h"
 
 using std::make_unique;
+
+static constexpr int wrapSettings[] = {
+	GL_MIRRORED_REPEAT, GL_CLAMP_TO_BORDER, GL_REPEAT, GL_CLAMP_TO_EDGE
+};
+
+static constexpr int filterSettings[] = { GL_NEAREST, GL_LINEAR };
 
 SlimeMold::SlimeMold(int width, int height, unsigned int seed) :
 	Simulation(width, height, seed) { };
@@ -47,7 +55,12 @@ void SlimeMold::InitializeTextures()
 {
 	trailTexture = make_unique<Texture>(width, height);
 	diffusedTrailTexture = make_unique<Texture>(width, height);
-	displayTexture = make_unique<Texture>(width, height);
+
+	displayTexture = make_unique<Texture>(
+		width, height, GL_RGBA32F,
+		wrapSettings[SlimeMoldSettings::SelectedWrap],
+		filterSettings[SlimeMoldSettings::SelectedFilter]
+	);
 }
 
 void SlimeMold::InitializeShaders()
@@ -152,6 +165,13 @@ void SlimeMold::InitializeCellSpecies(std::vector<SlimeCell>& slimeCells,
 
 		slimeCells.push_back(cell);
 	}
+}
+
+void SlimeMold::ApplyTextureSettings()
+{
+	using namespace SlimeMoldSettings;
+	displayTexture->SetWrap(wrapSettings[SelectedWrap]);
+	displayTexture->SetFilter(filterSettings[SelectedFilter]);
 }
 
 bool SlimeMold::IsPendingRestart() const
