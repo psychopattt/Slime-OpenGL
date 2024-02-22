@@ -154,9 +154,20 @@ void SlimeMold::InitializeCellSpecies(std::vector<SlimeCell>& slimeCells,
 	}
 }
 
+bool SlimeMold::IsPendingRestart() const
+{
+	return restartPending;
+}
+
+void SlimeMold::SetPendingRestart()
+{
+	restartPending = true;
+}
+
 void SlimeMold::Restart()
 {
 	Simulation::Initialize();
+	restartPending = false;
 }
 
 void SlimeMold::Execute()

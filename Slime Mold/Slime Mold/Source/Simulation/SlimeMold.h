@@ -17,6 +17,8 @@ class SlimeMold : public Simulation
 		SlimeMold(int width, int height, unsigned int seed = 0);
 		void Initialize(int width, int height, unsigned int seed = 0) override;
 		void ApplyShaderSettings();
+		bool IsPendingRestart() const;
+		void SetPendingRestart();
 		void Restart() override;
 		void Execute() override;
 		void Draw() override;
@@ -24,6 +26,7 @@ class SlimeMold : public Simulation
 
 	private:
 		bool simUpdated = false;
+		bool restartPending = false;
 		unsigned int totalCells = 0;
 		unsigned int enabledSpeciesCount = 1;
 
