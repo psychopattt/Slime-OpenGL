@@ -61,7 +61,7 @@ void SlimeMold::InitializeShaders()
 
 void SlimeMold::InitializeSlimeShader()
 {
-	slimeShader = make_unique<ComputeShader>("Slime", totalCells, 1);
+	slimeShader = make_unique<ComputeShader>("Slime", totalCells);
 	slimeShader->SetTextureBinding("trailTexture", trailTexture->GetId());
 	slimeShader->SetInt("height", height);
 	slimeShader->SetInt("width", width);

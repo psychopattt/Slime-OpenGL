@@ -15,8 +15,8 @@ class SlimeSpeciesMenu : public ImGuiWindow
 		void Render() override;
 
 	private:
-		class SlimeMold* slimeSim;
 		bool changesPending = false;
+		class SlimeMold* slimeSim = nullptr;
 
 		void RenderSpeciesTab(int speciesId);
 		void RenderEnableSection(SpeciesSettings& species);

@@ -12,7 +12,7 @@ int main()
 	SlimeSpeciesMenu speciesMenu = SlimeSpeciesMenu();
 	ImGuiWindow* menus[] = { &moldMenu, &speciesMenu };
 
-	OCSFW(&simulation, "Slime Mold", nullptr, nullptr, menus, std::size(menus));
+	OCSFW(&simulation, "Slime Mold", menus, std::size(menus));
 
 	return 0;
 }
