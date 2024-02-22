@@ -49,5 +49,6 @@ class SlimeMold : public Simulation
 		void InitializeColorShader();
 		void InitializeCopyShader();
 		void InitializeSlimeCells();
-		void InitializeCellSpecies(std::vector<struct SlimeCell>& slimeCells, int speciesId) const;
+		void InitializeCellSpecies(std::vector<struct SlimeCell>& slimeCells,
+			int speciesIndex, int cellCount) const;
 };

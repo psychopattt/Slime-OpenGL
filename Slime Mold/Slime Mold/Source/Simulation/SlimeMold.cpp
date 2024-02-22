@@ -119,11 +119,15 @@ void SlimeMold::InitializeSlimeCells()
 
 	std::vector<SlimeCell> cells;
 	cells.reserve(totalCells);
+	int speciesIndex = 0;
 
 	for (int speciesId = 0; speciesId < AllSpecies.size(); speciesId++)
 	{
 		if (EnabledSpecies[speciesId])
-			InitializeCellSpecies(cells, speciesId);
+		{
+			InitializeCellSpecies(cells, speciesIndex, AllSpecies[speciesId].cellCount);
+			speciesIndex++;
+		}
 	}
 
 	slimeCells = make_unique<ComputeBuffer>(cells.data(), totalCells * sizeof(SlimeCell));
@@ -131,19 +135,20 @@ void SlimeMold::InitializeSlimeCells()
 	slimeShader->SetInt("slimeCellCount", totalCells);
 }
 
-void SlimeMold::InitializeCellSpecies(std::vector<SlimeCell>& slimeCells, int speciesId) const
+void SlimeMold::InitializeCellSpecies(std::vector<SlimeCell>& slimeCells,
+	int speciesIndex, int cellCount) const
 {
-	for (int i = 0; i < AllSpecies[speciesId].cellCount; i++)
+	for (int i = 0; i < cellCount; i++)
 	{
 		SlimeCell cell = SlimeCell();
 		cell.position[0] = width / 2.0f;
 		cell.position[1] = height / 2.0f;
 
 		cell.angle = rand() * SlimeMoldSettings::Tau / RAND_MAX;
-		cell.speciesIndex = speciesId;
+		cell.speciesIndex = speciesIndex;
 
 		for (int j = 0; j < AllSpecies.size(); j++)
-			cell.speciesMask[j] = static_cast<float>(speciesId == j);
+			cell.speciesMask[j] = static_cast<float>(speciesIndex == j);
 
 		slimeCells.push_back(cell);
 	}
