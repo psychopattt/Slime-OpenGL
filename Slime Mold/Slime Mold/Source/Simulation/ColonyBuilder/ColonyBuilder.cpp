@@ -76,6 +76,10 @@ void ColonyBuilder::GenerateCellSpawn(SlimeCell& cell,
 			RandomCirclePosition(cell.position, smallestDimension / 2.0f);
 			cell.angle = atan2(center[1] - cell.position[1], center[0] - cell.position[0]);
 			break;
+		case OutwardCircle:
+			RandomCirclePosition(cell.position, smallestDimension * 0.15f);
+			cell.angle = atan2(cell.position[1] - center[1], cell.position[0] - center[0]);
+			break;
 		case RandomCircle:
 			RandomCirclePosition(cell.position, smallestDimension * 0.15f);
 			break;

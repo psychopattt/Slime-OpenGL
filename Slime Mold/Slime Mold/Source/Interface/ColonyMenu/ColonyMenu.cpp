@@ -10,7 +10,7 @@
 using namespace ImGui;
 
 constexpr char spawnModeLabels[] =
-	"Random\0Point\0Inward Circle\0Random Circle\0Missile\0\0";
+	"Random\0Point\0Inward Circle\0Outward Circle\0Random Circle\0Missile\0\0";
 
 void ColonyMenu::Initialize()
 {
