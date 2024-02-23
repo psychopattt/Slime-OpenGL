@@ -1,4 +1,4 @@
-#include "SlimeSpeciesMenu.h"
+#include "ColonyMenu.h"
 
 #include "imgui/imgui.h"
 
@@ -9,17 +9,17 @@
 
 using namespace ImGui;
 
-void SlimeSpeciesMenu::Initialize()
+void ColonyMenu::Initialize()
 {
 	SetColorEditOptions(ImGuiColorEditFlags_PickerHueWheel);
 	slimeSim = reinterpret_cast<SlimeMold*>(MainSettings::Sim);
 }
 
-void SlimeSpeciesMenu::Render()
+void ColonyMenu::Render()
 {
-	using SlimeMoldSettings::ShowColonySettings;
+	using SlimeMoldSettings::ShowColonyMenu;
 
-	if (!ShowColonySettings)
+	if (!ShowColonyMenu)
 		return;
 
 	SetNextWindowPos(ImVec2(270, 10), ImGuiCond_FirstUseEver);
@@ -27,7 +27,7 @@ void SlimeSpeciesMenu::Render()
 	int windowFlags = slimeSim->IsPendingRestart() ?
 		ImGuiWindowFlags_UnsavedDocument : ImGuiWindowFlags_None;
 
-	if (Begin("Colony Settings", &ShowColonySettings, windowFlags))
+	if (Begin("Colony Settings", &ShowColonyMenu, windowFlags))
 	{
 		PushItemWidth(-1);
 
@@ -46,7 +46,7 @@ void SlimeSpeciesMenu::Render()
 	End();
 }
 
-void SlimeSpeciesMenu::RenderSpeciesTab(int speciesId)
+void ColonyMenu::RenderSpeciesTab(int speciesId)
 {
 	SpeciesSettings& species = Colony[speciesId];
 	string tabLabel = "Species " + std::to_string(speciesId + 1);
@@ -80,7 +80,7 @@ void SlimeSpeciesMenu::RenderSpeciesTab(int speciesId)
 	}
 }
 
-void SlimeSpeciesMenu::RenderTabPopup(int speciesId)
+void ColonyMenu::RenderTabPopup(int speciesId)
 {
 	if (BeginPopupContextItem())
 	{
@@ -90,7 +90,7 @@ void SlimeSpeciesMenu::RenderTabPopup(int speciesId)
 	}
 }
 
-void SlimeSpeciesMenu::RenderCopyMenu(int speciesId, bool copyDirection)
+void ColonyMenu::RenderCopyMenu(int speciesId, bool copyDirection)
 {
 	if (BeginMenu(copyDirection ? "Copy From" : "Copy To"))
 	{
@@ -112,7 +112,7 @@ void SlimeSpeciesMenu::RenderCopyMenu(int speciesId, bool copyDirection)
 	}
 }
 
-void SlimeSpeciesMenu::RenderEnableSection(struct SpeciesSettings& species)
+void ColonyMenu::RenderEnableSection(struct SpeciesSettings& species)
 {
 	if (Checkbox("##checkboxEnabled", &species.enabled))
 		slimeSim->SetPendingRestart();
@@ -127,7 +127,7 @@ void SlimeSpeciesMenu::RenderEnableSection(struct SpeciesSettings& species)
 	PopStyleVar();
 }
 
-void SlimeSpeciesMenu::RenderCellSection(SpeciesSettings& species)
+void ColonyMenu::RenderCellSection(SpeciesSettings& species)
 {
 	if (CollapsingHeader("Cell", ImGuiTreeNodeFlags_DefaultOpen))
 	{
@@ -138,7 +138,7 @@ void SlimeSpeciesMenu::RenderCellSection(SpeciesSettings& species)
 	}
 }
 
-void SlimeSpeciesMenu::RenderSpeedSection(SpeciesSettings& species)
+void ColonyMenu::RenderSpeedSection(SpeciesSettings& species)
 {
 	if (CollapsingHeader("Speed"))
 	{
@@ -147,7 +147,7 @@ void SlimeSpeciesMenu::RenderSpeedSection(SpeciesSettings& species)
 	}
 }
 
-void SlimeSpeciesMenu::RenderTrailSection(SpeciesSettings& species)
+void ColonyMenu::RenderTrailSection(SpeciesSettings& species)
 {
 	if (CollapsingHeader("Trail"))
 	{
@@ -157,7 +157,7 @@ void SlimeSpeciesMenu::RenderTrailSection(SpeciesSettings& species)
 	}
 }
 
-void SlimeSpeciesMenu::RenderSensorsSection(SpeciesSettings& species)
+void ColonyMenu::RenderSensorsSection(SpeciesSettings& species)
 {
 	if (CollapsingHeader("Sensors"))
 	{
@@ -167,7 +167,7 @@ void SlimeSpeciesMenu::RenderSensorsSection(SpeciesSettings& species)
 	}
 }
 
-void SlimeSpeciesMenu::RenderColorSection(SpeciesSettings& species)
+void ColonyMenu::RenderColorSection(SpeciesSettings& species)
 {
 	if (CollapsingHeader("Color"))
 	{
@@ -177,27 +177,27 @@ void SlimeSpeciesMenu::RenderColorSection(SpeciesSettings& species)
 	}
 }
 
-bool SlimeSpeciesMenu::RenderParameterSlider(string label, int& parameter, int min, int max)
+bool ColonyMenu::RenderParameterSlider(string label, int& parameter, int min, int max)
 {
 	return RenderParameter(label, false, ImGuiDataType_S32, &parameter, &min, &max);
 }
 
-bool SlimeSpeciesMenu::RenderParameterSlider(string label, float& parameter, float min, float max)
+bool ColonyMenu::RenderParameterSlider(string label, float& parameter, float min, float max)
 {
 	return RenderParameter(label, false, ImGuiDataType_Float, &parameter, &min, &max);
 }
 
-bool SlimeSpeciesMenu::RenderParameterDrag(string label, int& parameter, int min, int max, float speed)
+bool ColonyMenu::RenderParameterDrag(string label, int& parameter, int min, int max, float speed)
 {
 	return RenderParameter(label, true, ImGuiDataType_S32, &parameter, &min, &max, speed);
 }
 
-bool SlimeSpeciesMenu::RenderParameterDrag(string label, float& parameter, float min, float max, float speed)
+bool ColonyMenu::RenderParameterDrag(string label, float& parameter, float min, float max, float speed)
 {
 	return RenderParameter(label, true, ImGuiDataType_Float, &parameter, &min, &max, speed);
 }
 
-bool SlimeSpeciesMenu::RenderParameter(string label, bool isDrag, int dataType, void* parameter,
+bool ColonyMenu::RenderParameter(string label, bool isDrag, int dataType, void* parameter,
 	const void* min, const void* max, float speed)
 {
 	SeparatorText(label.c_str());
@@ -224,7 +224,7 @@ bool SlimeSpeciesMenu::RenderParameter(string label, bool isDrag, int dataType, 
 	return parameterModified;
 }
 
-void SlimeSpeciesMenu::UpdateSettings()
+void ColonyMenu::UpdateSettings()
 {
 	if (changesPending)
 	{

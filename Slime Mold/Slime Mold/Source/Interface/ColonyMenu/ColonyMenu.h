@@ -8,7 +8,7 @@ using std::string;
 
 struct SpeciesSettings;
 
-class SlimeSpeciesMenu : public ImGuiWindow
+class ColonyMenu : public ImGuiWindow
 {
 	public:
 		void Initialize() override;
