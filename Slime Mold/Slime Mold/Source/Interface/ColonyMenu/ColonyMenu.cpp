@@ -9,6 +9,9 @@
 
 using namespace ImGui;
 
+constexpr char spawnModeLabels[] =
+	"Random\0Point\0Inward Circle\0Random Circle\0Missile\0\0";
+
 void ColonyMenu::Initialize()
 {
 	SetColorEditOptions(ImGuiColorEditFlags_PickerHueWheel);
@@ -135,6 +138,11 @@ void ColonyMenu::RenderCellSection(SpeciesSettings& species)
 
 		if (RenderParameterDrag("Cell Count", species.cellCount, 1, INT32_MAX, 25))
 			slimeSim->SetPendingRestart();
+
+		SeparatorText("Spawn Mode");
+
+		if (Combo("##comboSpawnMode", (int*)&species.spawnMode, spawnModeLabels))
+			slimeSim->SetPendingRestart();
 	}
 }
 
@@ -169,7 +177,7 @@ void ColonyMenu::RenderSensorsSection(SpeciesSettings& species)
 
 void ColonyMenu::RenderColorSection(SpeciesSettings& species)
 {
-	if (CollapsingHeader("Color"))
+	if (CollapsingHeader("Color", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		changesPending = ColorEdit3(
 			"##colorPickerSpecies", species.color

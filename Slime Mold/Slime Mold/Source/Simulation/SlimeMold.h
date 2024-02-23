@@ -29,6 +29,7 @@ class SlimeMold : public Simulation
 		bool simUpdated = false;
 		bool restartPending = false;
 		unsigned int totalCells = 0;
+		unique_ptr<class ColonyBuilder> colonyBuilder;
 
 		unique_ptr<ComputeShader> slimeShader;
 		unique_ptr<ComputeShader> diffuseShader;
@@ -52,6 +53,4 @@ class SlimeMold : public Simulation
 		void InitializeColorShader();
 		void InitializeCopyShader();
 		void InitializeColony();
-		void InitializeSpecies(std::vector<struct SlimeCell>& cells,
-			int speciesIndex, int cellCount) const;
 };

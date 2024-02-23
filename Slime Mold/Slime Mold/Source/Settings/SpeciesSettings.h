@@ -2,6 +2,8 @@
 
 #include <array>
 
+#include "Settings/SpawnMode.h"
+
 struct ShaderSpeciesSettings
 {
 	float color[4];
@@ -32,6 +34,8 @@ struct SpeciesSettings
 	float trailWeight;
 
 	int cellCount;
+	SpawnMode spawnMode;
+
 	bool enabled;
 	bool wasEnabled;
 
@@ -46,7 +50,7 @@ struct SpeciesSettings
 };
 
 inline std::array<SpeciesSettings, 3> Colony = {
-	SpeciesSettings({ 1, 1, 1, 0 }, 20, 2, 1, 35, 30, 10, 100, true),
-	SpeciesSettings({ 1, 0, 0, 0 }, 20, 2, 1, 35, 30, 10, 100, false),
-	SpeciesSettings({ 0, 1, 0, 0 }, 20, 2, 1, 35, 30, 10, 100, false)
+	SpeciesSettings({ 1, 1, 1, 0 }, 20, 2, 1, 35, 30, 10, 100, Point, true),
+	SpeciesSettings({ 1, 0, 0, 0 }, 20, 2, 1, 35, 30, 10, 100, Point, false),
+	SpeciesSettings({ 0, 1, 0, 0 }, 20, 2, 1, 35, 30, 10, 100, Point, false)
 };
