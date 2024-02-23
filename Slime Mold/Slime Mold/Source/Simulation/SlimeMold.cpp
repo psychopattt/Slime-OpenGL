@@ -30,24 +30,20 @@ void SlimeMold::Initialize(int width, int height, unsigned int seed)
 	InitializeSettings();
 	InitializeTextures();
 	InitializeShaders();
-	InitializeSlimeCells();
+	InitializeColony();
 	simDrawer = make_unique<SimulationDrawer>();
 }
 
 void SlimeMold::InitializeSettings()
 {
 	totalCells = 0;
-	enabledSpeciesCount = 0;
 
-	for (int speciesId = 0; speciesId < AllSpecies.size(); speciesId++)
+	for (SpeciesSettings& species : Colony)
 	{
-		EnabledSpecies[speciesId] = AllSpecies[speciesId].enabled;
+		species.wasEnabled = species.enabled;
 
-		if (EnabledSpecies[speciesId])
-		{
-			totalCells += AllSpecies[speciesId].cellCount;
-			enabledSpeciesCount++;
-		}
+		if (species.enabled)
+			totalCells += species.cellCount;
 	}
 }
 
@@ -108,25 +104,28 @@ void SlimeMold::InitializeCopyShader()
 
 void SlimeMold::ApplyShaderSettings()
 {
-	std::vector<SpeciesSettings> enabledSpecies;
+	std::vector<ShaderSpeciesSettings> enabledSpecies;
 
-	for (int i = 0; i < AllSpecies.size(); i++)
+	for (const SpeciesSettings& species : Colony)
 	{
-		if (EnabledSpecies[i])
-			enabledSpecies.push_back(AllSpecies[i]);
+		if (species.wasEnabled)
+			enabledSpecies.push_back(species.ToShaderStruct());
 	}
 
-	speciesSettings = make_unique<ComputeBuffer>(enabledSpecies.data(), enabledSpeciesCount * sizeof(SpeciesSettings));
-	slimeShader->SetBufferBinding("speciesSettings", speciesSettings->GetId());
+	colonyBuffer = make_unique<ComputeBuffer>(
+		enabledSpecies.data(), enabledSpecies.size() * sizeof(ShaderSpeciesSettings)
+	);
 
-	colorShader->SetBufferBinding("speciesSettings", speciesSettings->GetId());
-	colorShader->SetInt("speciesCount", enabledSpeciesCount);
+	slimeShader->SetBufferBinding("colonySettings", colonyBuffer->GetId());
+
+	colorShader->SetBufferBinding("colonySettings", colonyBuffer->GetId());
+	colorShader->SetInt("colonySize", static_cast<unsigned int>(enabledSpecies.size()));
 
 	diffuseShader->SetFloat("diffuseRate", SlimeMoldSettings::DiffuseRate);
 	diffuseShader->SetFloat("decayRate", SlimeMoldSettings::DecayRate);
 }
 
-void SlimeMold::InitializeSlimeCells()
+void SlimeMold::InitializeColony()
 {
 	srand(static_cast<unsigned int>(time(nullptr)));
 
@@ -134,21 +133,21 @@ void SlimeMold::InitializeSlimeCells()
 	cells.reserve(totalCells);
 	int speciesIndex = 0;
 
-	for (int speciesId = 0; speciesId < AllSpecies.size(); speciesId++)
+	for (const SpeciesSettings& species : Colony)
 	{
-		if (EnabledSpecies[speciesId])
+		if (species.wasEnabled)
 		{
-			InitializeCellSpecies(cells, speciesIndex, AllSpecies[speciesId].cellCount);
+			InitializeSpecies(cells, speciesIndex, species.cellCount);
 			speciesIndex++;
 		}
 	}
 
-	slimeCells = make_unique<ComputeBuffer>(cells.data(), totalCells * sizeof(SlimeCell));
-	slimeShader->SetBufferBinding("slimeCells", slimeCells->GetId());
-	slimeShader->SetInt("slimeCellCount", totalCells);
+	cellBuffer = make_unique<ComputeBuffer>(cells.data(), totalCells * sizeof(SlimeCell));
+	slimeShader->SetBufferBinding("slimeCells", cellBuffer->GetId());
+	slimeShader->SetInt("cellCount", totalCells);
 }
 
-void SlimeMold::InitializeCellSpecies(std::vector<SlimeCell>& slimeCells,
+void SlimeMold::InitializeSpecies(std::vector<SlimeCell>& cells,
 	int speciesIndex, int cellCount) const
 {
 	for (int i = 0; i < cellCount; i++)
@@ -160,10 +159,10 @@ void SlimeMold::InitializeCellSpecies(std::vector<SlimeCell>& slimeCells,
 		cell.angle = rand() * SlimeMoldSettings::Tau / RAND_MAX;
 		cell.speciesIndex = speciesIndex;
 
-		for (int j = 0; j < AllSpecies.size(); j++)
+		for (int j = 0; j < Colony.size(); j++)
 			cell.speciesMask[j] = static_cast<float>(speciesIndex == j);
 
-		slimeCells.push_back(cell);
+		cells.push_back(cell);
 	}
 }
 

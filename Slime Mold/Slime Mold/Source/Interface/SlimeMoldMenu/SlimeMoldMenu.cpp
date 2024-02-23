@@ -22,7 +22,7 @@ void SlimeMoldMenu::Render()
 			using namespace SlimeMoldSettings;
 
 			PushItemWidth(-1);
-			Checkbox("Show Species Menu", &ShowSpeciesSettings);
+			Checkbox("Show Colony Menu", &ShowColonySettings);
 			RenderParameterCombo("Wrap", SelectedWrap, "Mirror\0Border\0Repeat\0Edge\0\0");
 			RenderParameterCombo("Filter", SelectedFilter, "Nearest\0Linear\0\0");
 			PopItemWidth();

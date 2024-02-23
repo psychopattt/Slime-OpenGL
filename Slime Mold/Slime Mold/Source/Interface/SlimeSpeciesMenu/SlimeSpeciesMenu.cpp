@@ -17,9 +17,9 @@ void SlimeSpeciesMenu::Initialize()
 
 void SlimeSpeciesMenu::Render()
 {
-	using SlimeMoldSettings::ShowSpeciesSettings;
+	using SlimeMoldSettings::ShowColonySettings;
 
-	if (!ShowSpeciesSettings)
+	if (!ShowColonySettings)
 		return;
 
 	SetNextWindowPos(ImVec2(270, 10), ImGuiCond_FirstUseEver);
@@ -27,13 +27,13 @@ void SlimeSpeciesMenu::Render()
 	int windowFlags = slimeSim->IsPendingRestart() ?
 		ImGuiWindowFlags_UnsavedDocument : ImGuiWindowFlags_None;
 
-	if (Begin("Species Settings", &ShowSpeciesSettings, windowFlags))
+	if (Begin("Colony Settings", &ShowColonySettings, windowFlags))
 	{
 		PushItemWidth(-1);
 
 		if (BeginTabBar("Species"))
 		{
-			for (int id = 0; id < AllSpecies.size(); id++)
+			for (int id = 0; id < Colony.size(); id++)
 				RenderSpeciesTab(id);
 
 			UpdateSettings();
@@ -48,7 +48,7 @@ void SlimeSpeciesMenu::Render()
 
 void SlimeSpeciesMenu::RenderSpeciesTab(int speciesId)
 {
-	SpeciesSettings& species = AllSpecies[speciesId];
+	SpeciesSettings& species = Colony[speciesId];
 	string tabLabel = "Species " + std::to_string(speciesId + 1);
 
 	ImVec2& itemSpacing = GetStyle().ItemSpacing;
@@ -94,7 +94,7 @@ void SlimeSpeciesMenu::RenderCopyMenu(int speciesId, bool copyDirection)
 {
 	if (BeginMenu(copyDirection ? "Copy From" : "Copy To"))
 	{
-		for (int i = 0; i < AllSpecies.size(); i++)
+		for (int i = 0; i < Colony.size(); i++)
 		{
 			int sourceId = copyDirection ? speciesId : i;
 			int targetId = copyDirection ? i : speciesId;
@@ -102,7 +102,7 @@ void SlimeSpeciesMenu::RenderCopyMenu(int speciesId, bool copyDirection)
 
 			if (i != speciesId && MenuItem(menuLabel.c_str()))
 			{
-				AllSpecies[sourceId] = AllSpecies[targetId];
+				Colony[sourceId] = Colony[targetId];
 				slimeSim->SetPendingRestart();
 				changesPending = true;
 			}

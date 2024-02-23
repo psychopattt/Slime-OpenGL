@@ -25,12 +25,12 @@ struct SpeciesSettings
     float trailWeight;
 };
 
-layout(std430) restrict readonly buffer speciesSettings
+layout(std430) restrict readonly buffer colonySettings
 {
-    SpeciesSettings Settings[];
+    SpeciesSettings Colony[];
 };
 
-uniform uint slimeCellCount;
+uniform uint cellCount;
 layout(std430) restrict buffer slimeCells
 {
     SlimeCell Cells[];
@@ -64,12 +64,12 @@ float NormalizeUnsignedInt(uint value)
 
 float SenseTrail(SlimeCell cell, float sensorAngleOffset)
 {
-    SpeciesSettings settings = Settings[cell.speciesIndex];
+    SpeciesSettings species = Colony[cell.speciesIndex];
 
-    int sensorSize = settings.sensorSize;
+    int sensorSize = species.sensorSize;
     float sensorAngle = cell.angle + sensorAngleOffset;
     vec2 sensorDirection = vec2(cos(sensorAngle), sin(sensorAngle));
-    vec2 sensorPosition = sensorDirection * settings.sensorOffset + cell.position;
+    vec2 sensorPosition = sensorDirection * species.sensorOffset + cell.position;
 
     ivec4 senseWeight = ivec4(cell.speciesMask * 2 - 1);
     float senseTotal = 0;
@@ -94,13 +94,13 @@ float SenseTrail(SlimeCell cell, float sensorAngleOffset)
 void SteerCell(uint cellId, uint random)
 {
     SlimeCell cell = Cells[cellId];
-    SpeciesSettings cellSettings = Settings[cell.speciesIndex];
+    SpeciesSettings species = Colony[cell.speciesIndex];
 
-    float turnSpeed = cellSettings.turnSpeed * tau;
+    float turnSpeed = species.turnSpeed * tau;
     float steerStrength = NormalizeUnsignedInt(random);
 
     float forwardWeight = SenseTrail(cell, 0);
-    float sensorAngleRad = radians(cellSettings.sensorAngleDegrees);
+    float sensorAngleRad = radians(species.sensorAngleDegrees);
     float rightWeight = SenseTrail(cell, -sensorAngleRad);
     float leftWeight = SenseTrail(cell, sensorAngleRad);
 
@@ -118,10 +118,10 @@ void SteerCell(uint cellId, uint random)
 void MoveCell(uint cellId, uint random)
 {
     SlimeCell cell = Cells[cellId];
-    SpeciesSettings cellSettings = Settings[cell.speciesIndex];
+    SpeciesSettings species = Colony[cell.speciesIndex];
 
     vec2 direction = vec2(cos(cell.angle), sin(cell.angle));
-    vec2 newPos = cell.position + direction * cellSettings.moveSpeed * globalSpeed;
+    vec2 newPos = cell.position + direction * species.moveSpeed * globalSpeed;
 
     // Bounce on boundaries
     if (newPos.x < 0 || newPos.x >= width || newPos.y < 0 || newPos.y >= height)
@@ -136,7 +136,7 @@ void MoveCell(uint cellId, uint random)
     {
         ivec2 newTrailCoords = ivec2(newPos);
         vec4 oldTrailData = imageLoad(trailTexture, newTrailCoords);
-        vec4 newTrailData = min(vec4(1), oldTrailData + cell.speciesMask * cellSettings.trailWeight * globalSpeed);
+        vec4 newTrailData = min(vec4(1), oldTrailData + cell.speciesMask * species.trailWeight * globalSpeed);
         imageStore(trailTexture, newTrailCoords, newTrailData);
     }
 
@@ -147,7 +147,7 @@ void main()
 {
     uint cellId = gl_GlobalInvocationID.x;
 
-    if (cellId >= slimeCellCount)
+    if (cellId >= cellCount)
         return;
 
     vec2 position = Cells[cellId].position;

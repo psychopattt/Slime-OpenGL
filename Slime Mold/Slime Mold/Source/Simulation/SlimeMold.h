@@ -29,15 +29,14 @@ class SlimeMold : public Simulation
 		bool simUpdated = false;
 		bool restartPending = false;
 		unsigned int totalCells = 0;
-		unsigned int enabledSpeciesCount = 1;
 
 		unique_ptr<ComputeShader> slimeShader;
 		unique_ptr<ComputeShader> diffuseShader;
 		unique_ptr<ComputeShader> colorShader;
 		unique_ptr<ComputeShader> copyShader;
 
-		unique_ptr<ComputeBuffer> slimeCells;
-		unique_ptr<ComputeBuffer> speciesSettings;
+		unique_ptr<ComputeBuffer> cellBuffer;
+		unique_ptr<ComputeBuffer> colonyBuffer;
 
 		unique_ptr<Texture> trailTexture;
 		unique_ptr<Texture> diffusedTrailTexture;
@@ -52,7 +51,7 @@ class SlimeMold : public Simulation
 		void InitializeDiffuseShader();
 		void InitializeColorShader();
 		void InitializeCopyShader();
-		void InitializeSlimeCells();
-		void InitializeCellSpecies(std::vector<struct SlimeCell>& slimeCells,
+		void InitializeColony();
+		void InitializeSpecies(std::vector<struct SlimeCell>& cells,
 			int speciesIndex, int cellCount) const;
 };
