@@ -57,6 +57,7 @@ void SlimeSpeciesMenu::RenderSpeciesTab(int speciesId)
 	
 	if (BeginTabItem(tabLabel.c_str()))
 	{
+		RenderTabPopup(speciesId);
 		RenderEnableSection(species);
 
 		if (!species.enabled)
@@ -76,6 +77,38 @@ void SlimeSpeciesMenu::RenderSpeciesTab(int speciesId)
 	else
 	{
 		PopStyleVar();
+	}
+}
+
+void SlimeSpeciesMenu::RenderTabPopup(int speciesId)
+{
+	if (BeginPopupContextItem())
+	{
+		RenderCopyMenu(speciesId, true);
+		RenderCopyMenu(speciesId, false);
+		EndPopup();
+	}
+}
+
+void SlimeSpeciesMenu::RenderCopyMenu(int speciesId, bool copyDirection)
+{
+	if (BeginMenu(copyDirection ? "Copy From" : "Copy To"))
+	{
+		for (int i = 0; i < AllSpecies.size(); i++)
+		{
+			int sourceId = copyDirection ? speciesId : i;
+			int targetId = copyDirection ? i : speciesId;
+			string menuLabel = "Species " + std::to_string(i + 1);
+
+			if (i != speciesId && MenuItem(menuLabel.c_str()))
+			{
+				AllSpecies[sourceId] = AllSpecies[targetId];
+				slimeSim->SetPendingRestart();
+				changesPending = true;
+			}
+		}
+
+		ImGui::EndMenu();
 	}
 }
 

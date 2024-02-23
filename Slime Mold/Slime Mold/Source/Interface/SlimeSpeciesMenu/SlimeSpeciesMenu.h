@@ -19,6 +19,8 @@ class SlimeSpeciesMenu : public ImGuiWindow
 		class SlimeMold* slimeSim = nullptr;
 
 		void RenderSpeciesTab(int speciesId);
+		void RenderTabPopup(int speciesId);
+		void RenderCopyMenu(int speciesId, bool copyDirection);
 		void RenderEnableSection(SpeciesSettings& species);
 		void RenderCellSection(SpeciesSettings& species);
 		void RenderSpeedSection(SpeciesSettings& species);
