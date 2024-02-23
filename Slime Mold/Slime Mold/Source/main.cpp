@@ -1,6 +1,6 @@
-#include "Simulation/SlimeMold.h"
 #include "OCSFW.h"
 
+#include "Simulation/SlimeMold/SlimeMold.h"
 #include "Interface/ColonyMenu/ColonyMenu.h"
 #include "Interface/SlimeMoldMenu/SlimeMoldMenu.h"
 

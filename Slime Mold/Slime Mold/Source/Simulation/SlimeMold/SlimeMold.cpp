@@ -8,11 +8,11 @@
 #include "Settings/SlimeCell.h"
 #include "Settings/SpeciesSettings.h"
 #include "Settings/SlimeMoldSettings.h"
-#include "ColonyBuilder/ColonyBuilder.h"
 #include "Shaders/Buffers/Texture/Texture.h"
 #include "Shaders/ComputeShader/ComputeShader.h"
 #include "Shaders/Buffers/ComputeBuffer/ComputeBuffer.h"
 #include "Simulation/SimulationDrawer/SimulationDrawer.h"
+#include "Simulation/ColonyBuilder/ColonyBuilder.h"
 
 using std::make_unique;
 

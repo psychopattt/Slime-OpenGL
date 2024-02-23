@@ -2,7 +2,7 @@
 
 #include "imgui/imgui.h"
 
-#include "Simulation/SlimeMold.h"
+#include "Simulation/SlimeMold/SlimeMold.h"
 #include "Settings/MainSettings.h"
 #include "Settings/SlimeMoldSettings.h"
 

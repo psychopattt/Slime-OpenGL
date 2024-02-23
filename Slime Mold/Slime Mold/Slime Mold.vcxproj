@@ -131,7 +131,7 @@
     <ClCompile Include="Source\Interface\ColonyMenu\ColonyMenu.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Shaders\PackedShaders.cpp" />
-    <ClCompile Include="Source\Simulation\SlimeMold.cpp" />
+    <ClCompile Include="Source\Simulation\SlimeMold\SlimeMold.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Settings\SpawnMode.h" />
@@ -184,7 +184,7 @@
     <ClInclude Include="Source\Interface\ColonyMenu\ColonyMenu.h" />
     <ClInclude Include="Source\Settings\SlimeCell.h" />
     <ClInclude Include="Source\Settings\SlimeMoldSettings.h" />
-    <ClInclude Include="Source\Simulation\SlimeMold.h" />
+    <ClInclude Include="Source\Simulation\SlimeMold\SlimeMold.h" />
     <ClInclude Include="Source\Settings\SpeciesSettings.h" />
   </ItemGroup>
   <ItemGroup>
