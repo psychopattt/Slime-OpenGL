@@ -113,7 +113,7 @@ void SlimeMold::ApplyShaderSettings()
 	}
 
 	colonyBuffer = make_unique<ComputeBuffer>(
-		enabledSpecies.data(), enabledSpecies.size() * sizeof(ShaderSpeciesSettings)
+		enabledSpecies.data(), enabledSpecies.size() * sizeof(enabledSpecies[0])
 	);
 
 	slimeShader->SetBufferBinding("colonySettings", colonyBuffer->GetId());
