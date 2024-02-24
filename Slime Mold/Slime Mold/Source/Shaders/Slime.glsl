@@ -40,7 +40,7 @@ uniform int width;
 uniform int height;
 layout(RGBA32F) restrict uniform image2D trailTexture;
 
-uniform float seed;
+uniform uint seed;
 uniform uint userSeed;
 const float globalSpeed = 0.02;
 const float tau = 6.2831853072;
@@ -152,7 +152,7 @@ void main()
 
     vec2 position = Cells[cellId].position;
     uint positionId = uint(position.y * width + position.x);
-    uint random = Random(positionId + Random(uint(seed * 100000) + cellId));
+    uint random = Random(positionId + Random(seed * 100000 + cellId));
 
     SteerCell(cellId, random);
     MoveCell(cellId, Random(random));

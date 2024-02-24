@@ -163,7 +163,8 @@ void SlimeMold::Restart()
 
 void SlimeMold::Execute()
 {
-	slimeShader->SetFloat("seed", static_cast<float>(time(nullptr)));
+	unsigned int seconds = static_cast<unsigned int>(time(nullptr));
+	slimeShader->SetInt("seed", seconds);
 	slimeShader->Execute();
 	diffuseShader->Execute();
 	copyShader->Execute();
