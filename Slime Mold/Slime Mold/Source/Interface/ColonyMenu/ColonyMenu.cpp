@@ -70,6 +70,13 @@ void ColonyMenu::RenderWindowPopup()
 			ImGui::EndMenu();
 		}
 
+		if (MenuItem("Copy Colony"))
+		{
+			SetClipboardText(colonyCodec->EncodeColony(
+				vector(Colony.begin(), Colony.end())
+			).data());
+		}
+
 		EndPopup();
 	}
 }

@@ -41,6 +41,7 @@ void SlimeMold::Initialize(int width, int height, unsigned int seed)
 
 void SlimeMold::InitializeSettings()
 {
+	restartPending = false;
 	totalCells = 0;
 
 	for (SpeciesSettings& species : Colony)
@@ -158,7 +159,6 @@ void SlimeMold::SetPendingRestart()
 void SlimeMold::Restart()
 {
 	Simulation::Initialize();
-	restartPending = false;
 }
 
 void SlimeMold::Execute()
