@@ -17,8 +17,8 @@ string ColonyCodec::FormatNumber(int number)
 string ColonyCodec::FormatNumber(float number)
 {
 	string str = to_string(number);
-	str.erase(str.find_last_not_of('0') + 1, string::npos);
-	str.erase(str.find_last_not_of('.') + 1, string::npos);
+	str.erase(str.find_last_not_of('0') + 1);
+	str.erase(str.find_last_not_of('.') + 1);
 
 	return str;
 }
