@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <string>
 
 #include "Interface/ImGui/ImGuiWindow/ImGuiWindow.h"
@@ -11,13 +12,17 @@ struct SpeciesSettings;
 class ColonyMenu : public ImGuiWindow
 {
 	public:
+		ColonyMenu();
 		void Initialize() override;
 		void Render() override;
+		~ColonyMenu();
 
 	private:
 		bool changesPending = false;
 		class SlimeMold* slimeSim = nullptr;
-
+		const std::unique_ptr<class ColonyCodec> colonyCodec = nullptr;
+		
+		void RenderWindowPopup();
 		void RenderSpeciesTab(int speciesId);
 		void RenderTabPopup(int speciesId);
 		void RenderCopyMenu(int speciesId, bool copyDirection);
@@ -35,5 +40,6 @@ class ColonyMenu : public ImGuiWindow
 		bool RenderParameter(string label, bool isDrag, int dataType, void* parameter,
 			const void* min, const void* max, float speed = 0);
 
+		void LoadColony(string colonyString);
 		void UpdateSettings();
 };

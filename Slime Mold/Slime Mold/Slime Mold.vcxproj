@@ -91,6 +91,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Simulation\ColonyCodec\ColonyCodec.cpp" />
     <ClCompile Include="Source\Simulation\ColonyBuilder\ColonyBuilder.cpp" />
     <ClCompile Include="OCSFW\Libraries\include\glad\gl.c" />
     <ClCompile Include="OCSFW\Libraries\include\imgui\imgui.cpp" />
@@ -134,6 +135,7 @@
     <ClCompile Include="Source\Simulation\SlimeMold\SlimeMold.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Simulation\ColonyCodec\ColonyCodec.h" />
     <ClInclude Include="Source\Settings\SpawnMode.h" />
     <ClInclude Include="Source\Simulation\ColonyBuilder\ColonyBuilder.h" />
     <ClInclude Include="OCSFW\Libraries\include\glad\gl.h" />

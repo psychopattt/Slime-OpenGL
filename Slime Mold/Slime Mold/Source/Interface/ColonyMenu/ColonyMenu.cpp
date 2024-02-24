@@ -1,8 +1,11 @@
 #include "ColonyMenu.h"
 
+#include <vector>
+
 #include "imgui/imgui.h"
 
 #include "Simulation/SlimeMold/SlimeMold.h"
+#include "Simulation/ColonyCodec/ColonyCodec.h"
 #include "Settings/MainSettings.h"
 #include "Settings/SpeciesSettings.h"
 #include "Settings/SlimeMoldSettings.h"
@@ -11,6 +14,8 @@ using namespace ImGui;
 
 constexpr char spawnModeLabels[] =
 	"Random\0Point\0Inward Circle\0Outward Circle\0Random Circle\0Missile\0\0";
+
+ColonyMenu::ColonyMenu() : colonyCodec(std::make_unique<ColonyCodec>()) { }
 
 void ColonyMenu::Initialize()
 {
@@ -32,6 +37,7 @@ void ColonyMenu::Render()
 
 	if (Begin("Colony Settings", &ShowColonyMenu, windowFlags))
 	{
+		RenderWindowPopup();
 		PushItemWidth(-1);
 
 		if (BeginTabBar("Species"))
@@ -47,6 +53,25 @@ void ColonyMenu::Render()
 	}
 
 	End();
+}
+
+void ColonyMenu::RenderWindowPopup()
+{
+	if (BeginPopupContextItem())
+	{
+		if (BeginMenu("Load Preset"))
+		{
+			for (int i = 0; i < ColonyPresets.size(); i++)
+			{
+				if (MenuItem(("Colony " + std::to_string(i + 1)).data()))
+					LoadColony(ColonyPresets[i]);
+			}
+
+			ImGui::EndMenu();
+		}
+
+		EndPopup();
+	}
 }
 
 void ColonyMenu::RenderSpeciesTab(int speciesId)
@@ -232,6 +257,23 @@ bool ColonyMenu::RenderParameter(string label, bool isDrag, int dataType, void* 
 	return parameterModified;
 }
 
+void ColonyMenu::LoadColony(string colonyString)
+{
+	std::vector<SpeciesSettings> loadedColony = colonyCodec->DecodeColony(colonyString);
+
+	if (!loadedColony.empty())
+	{
+		for (int speciesId = 0; speciesId < loadedColony.size(); speciesId++)
+		{
+			loadedColony[speciesId].wasEnabled = Colony[speciesId].wasEnabled;
+			Colony[speciesId] = loadedColony[speciesId];
+		}
+
+		slimeSim->SetPendingRestart();
+		changesPending = true;
+	}
+}
+
 void ColonyMenu::UpdateSettings()
 {
 	if (changesPending)
@@ -240,3 +282,5 @@ void ColonyMenu::UpdateSettings()
 		changesPending = false;
 	}
 }
+
+ColonyMenu::~ColonyMenu() { }
