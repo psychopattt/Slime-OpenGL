@@ -20,7 +20,7 @@ class ColonyMenu : public ImGuiWindow
 	private:
 		bool changesPending = false;
 		class SlimeMold* slimeSim = nullptr;
-		const std::unique_ptr<class ColonyCodec> colonyCodec = nullptr;
+		const std::unique_ptr<class ColonyCodec> colonyCodec;
 		
 		void RenderWindowPopup();
 		void RenderSpeciesTab(int speciesId);

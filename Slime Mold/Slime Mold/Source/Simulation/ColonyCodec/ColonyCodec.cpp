@@ -34,8 +34,8 @@ string ColonyCodec::EncodeColony(vector<SpeciesSettings> colony)
 		if (!species.enabled)
 			continue;
 
-		for (int colorChannel = 0; colorChannel < 3; colorChannel++)
-			colonyString += FormatNumber(species.color[colorChannel]) + ",";
+		for (int channelId = 0; channelId < 3; channelId++)
+			colonyString += FormatNumber(species.color[channelId]) + ",";
 
 		colonyString +=
 			FormatNumber(species.moveSpeed) + "," +
