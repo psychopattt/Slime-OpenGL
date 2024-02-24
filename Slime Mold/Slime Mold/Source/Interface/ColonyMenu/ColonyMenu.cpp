@@ -6,6 +6,7 @@
 
 #include "Simulation/SlimeMold/SlimeMold.h"
 #include "Simulation/ColonyCodec/ColonyCodec.h"
+#include "Interface/LoadColonyModal/LoadColonyModal.h"
 #include "Settings/MainSettings.h"
 #include "Settings/SpeciesSettings.h"
 #include "Settings/SlimeMoldSettings.h"
@@ -15,7 +16,9 @@ using namespace ImGui;
 constexpr char spawnModeLabels[] =
 	"Random\0Point\0Inward Circle\0Outward Circle\0Random Circle\0Missile\0\0";
 
-ColonyMenu::ColonyMenu() : colonyCodec(std::make_unique<ColonyCodec>()) { }
+ColonyMenu::ColonyMenu() :
+	colonyCodec(std::make_unique<ColonyCodec>()),
+	loadModal(std::make_unique<LoadColonyModal>()) { }
 
 void ColonyMenu::Initialize()
 {
@@ -30,6 +33,7 @@ void ColonyMenu::Render()
 	if (!ShowColonyMenu)
 		return;
 
+	RenderLoadModal();
 	SetNextWindowPos(ImVec2(270, 10), ImGuiCond_FirstUseEver);
 	SetNextWindowSize(ImVec2(311, -1), ImGuiCond_FirstUseEver);
 	int windowFlags = slimeSim->IsPendingRestart() ?
@@ -55,6 +59,14 @@ void ColonyMenu::Render()
 	End();
 }
 
+void ColonyMenu::RenderLoadModal()
+{
+	loadModal->Render();
+
+	if (loadModal->HasNewResult())
+		LoadColony(loadModal->GetResult());
+}
+
 void ColonyMenu::RenderWindowPopup()
 {
 	if (BeginPopupContextItem())
@@ -69,6 +81,9 @@ void ColonyMenu::RenderWindowPopup()
 
 			ImGui::EndMenu();
 		}
+
+		if (MenuItem("Load Colony"))
+			SlimeMoldSettings::ShowLoadModal = true;
 
 		if (MenuItem("Copy Colony"))
 		{
