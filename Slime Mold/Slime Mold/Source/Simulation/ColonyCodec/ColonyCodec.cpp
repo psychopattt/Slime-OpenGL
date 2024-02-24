@@ -9,12 +9,12 @@
 
 using std::string, std::to_string, std::vector;
 
-string ColonyCodec::FormatNumber(int number)
+string ColonyCodec::FormatNumber(int number) const
 {
 	return to_string(number);
 }
 
-string ColonyCodec::FormatNumber(float number)
+string ColonyCodec::FormatNumber(float number) const
 {
 	string str = to_string(number);
 	str.erase(str.find_last_not_of('0') + 1);
@@ -23,7 +23,7 @@ string ColonyCodec::FormatNumber(float number)
 	return str;
 }
 
-string ColonyCodec::EncodeColony(vector<SpeciesSettings> colony)
+string ColonyCodec::EncodeColony(vector<SpeciesSettings> colony) const
 {
 	string colonyString =
 		FormatNumber(SlimeMoldSettings::DiffuseRate) + "," +
@@ -52,7 +52,7 @@ string ColonyCodec::EncodeColony(vector<SpeciesSettings> colony)
 	return colonyString;
 }
 
-vector<string> ColonyCodec::SplitString(string str, char delimiter)
+vector<string> ColonyCodec::SplitString(string str, char delimiter) const
 {
 	string token;
 	vector<string> tokens;
@@ -67,7 +67,7 @@ vector<string> ColonyCodec::SplitString(string str, char delimiter)
 	return tokens;
 }
 
-vector<SpeciesSettings> ColonyCodec::DecodeColony(string colonyString)
+vector<SpeciesSettings> ColonyCodec::DecodeColony(string colonyString) const
 {
 	try
 	{

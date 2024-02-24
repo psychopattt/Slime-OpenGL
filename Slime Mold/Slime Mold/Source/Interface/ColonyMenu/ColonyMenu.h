@@ -21,7 +21,7 @@ class ColonyMenu : public ImGuiWindow
 		bool changesPending = false;
 		class SlimeMold* slimeSim = nullptr;
 		const std::unique_ptr<class LoadColonyModal> loadModal;
-		const std::unique_ptr<class ColonyCodec> colonyCodec;
+		const std::unique_ptr<const class ColonyCodec> colonyCodec;
 		
 		void RenderLoadModal();
 		void RenderWindowPopup();
