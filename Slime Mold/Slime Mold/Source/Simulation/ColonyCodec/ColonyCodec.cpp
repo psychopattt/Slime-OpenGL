@@ -73,12 +73,13 @@ vector<SpeciesSettings> ColonyCodec::DecodeColony(string colonyString) const
 	{
 		vector<SpeciesSettings> colony(Colony.size());
 		vector<string> colonyParams = SplitString(colonyString, '|');
+		size_t colonySize = std::min(colony.size(), colonyParams.size() - 1);
 
-		for (int i = 0; i < colonyParams.size() - 1; i++)
+		for (int i = 0; i < colonySize; i++)
 		{
 			vector<string> speciesParams = SplitString(colonyParams[i + 1], ',');
 			colony[i] = SpeciesSettings(
-				{ stof(speciesParams.at(0)), stof(speciesParams.at(1)), stof(speciesParams.at(2)), 0 },
+				{ stof(speciesParams.at(0)), stof(speciesParams.at(1)), stof(speciesParams.at(2)) },
 				stof(speciesParams.at(3)), stof(speciesParams.at(4)), stoi(speciesParams.at(5)),
 				stof(speciesParams.at(6)), stof(speciesParams.at(7)), stof(speciesParams.at(8)),
 				stoi(speciesParams.at(9)), SpawnMode(stoi(speciesParams.at(10))), true
