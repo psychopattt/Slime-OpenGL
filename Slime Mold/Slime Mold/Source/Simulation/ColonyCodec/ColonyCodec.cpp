@@ -23,11 +23,11 @@ string ColonyCodec::FormatNumber(float number) const
 	return str;
 }
 
-string ColonyCodec::EncodeColony(vector<SpeciesSettings> colony) const
+string ColonyCodec::EncodeColony(const vector<SpeciesSettings>& colony) const
 {
 	string colonyString =
-		FormatNumber(SlimeMoldSettings::DiffuseRate) + "," +
-		FormatNumber(SlimeMoldSettings::DecayRate) + "|";
+		FormatNumber(SlimeMoldSettings::DiffuseRate) + paramDelimiter +
+		FormatNumber(SlimeMoldSettings::DecayRate) + speciesDelimiter;
 
 	for (const SpeciesSettings& species : colony)
 	{
@@ -35,24 +35,24 @@ string ColonyCodec::EncodeColony(vector<SpeciesSettings> colony) const
 			continue;
 
 		for (int channelId = 0; channelId < 3; channelId++)
-			colonyString += FormatNumber(species.color[channelId]) + ",";
+			colonyString += FormatNumber(species.color[channelId]) + paramDelimiter;
 
 		colonyString +=
-			FormatNumber(species.moveSpeed) + "," +
-			FormatNumber(species.turnSpeed) + "," +
-			FormatNumber(species.sensorSize) + "," +
-			FormatNumber(species.sensorOffset) + "," +
-			FormatNumber(species.sensorAngleDegrees) + "," +
-			FormatNumber(species.trailWeight) + "," +
-			FormatNumber(species.cellCount) + "," +
-			FormatNumber(species.spawnMode) + "|";
+			FormatNumber(species.moveSpeed) + paramDelimiter +
+			FormatNumber(species.turnSpeed) + paramDelimiter +
+			FormatNumber(species.sensorSize) + paramDelimiter +
+			FormatNumber(species.sensorOffset) + paramDelimiter +
+			FormatNumber(species.sensorAngleDegrees) + paramDelimiter +
+			FormatNumber(species.trailWeight) + paramDelimiter +
+			FormatNumber(species.cellCount) + paramDelimiter +
+			FormatNumber(species.spawnMode) + speciesDelimiter;
 	}
 
 	colonyString.pop_back();
 	return colonyString;
 }
 
-vector<string> ColonyCodec::SplitString(string str, char delimiter) const
+vector<string> ColonyCodec::SplitString(const string& str, char delimiter) const
 {
 	string token;
 	vector<string> tokens;
@@ -67,17 +67,17 @@ vector<string> ColonyCodec::SplitString(string str, char delimiter) const
 	return tokens;
 }
 
-vector<SpeciesSettings> ColonyCodec::DecodeColony(string colonyString) const
+vector<SpeciesSettings> ColonyCodec::DecodeColony(const string& colonyString) const
 {
 	try
 	{
 		vector<SpeciesSettings> colony(Colony.size());
-		vector<string> colonyParams = SplitString(colonyString, '|');
+		vector<string> colonyParams = SplitString(colonyString, speciesDelimiter);
 		size_t colonySize = std::min(colony.size(), colonyParams.size() - 1);
 
-		for (int i = 0; i < colonySize; i++)
+		for (size_t i = 0; i < colonySize; i++)
 		{
-			vector<string> speciesParams = SplitString(colonyParams[i + 1], ',');
+			vector<string> speciesParams = SplitString(colonyParams[i + 1], paramDelimiter);
 			colony[i] = SpeciesSettings(
 				{ stof(speciesParams.at(0)), stof(speciesParams.at(1)), stof(speciesParams.at(2)) },
 				stof(speciesParams.at(3)), stof(speciesParams.at(4)), stoi(speciesParams.at(5)),
@@ -86,7 +86,7 @@ vector<SpeciesSettings> ColonyCodec::DecodeColony(string colonyString) const
 			);
 		}
 		
-		vector<string> globalParams = SplitString(colonyParams.at(0), ',');
+		vector<string> globalParams = SplitString(colonyParams.at(0), paramDelimiter);
 		SlimeMoldSettings::DiffuseRate = stof(globalParams.at(0));
 		SlimeMoldSettings::DecayRate = stof(globalParams.at(1));
 
