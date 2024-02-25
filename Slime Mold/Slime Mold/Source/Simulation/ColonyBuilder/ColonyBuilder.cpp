@@ -1,7 +1,7 @@
 #include "ColonyBuilder.h"
 
 #include "Settings/SlimeCell.h"
-#include "Settings/SpawnMode.h"
+#include "Settings/SpawnModes.h"
 #include "Settings/SpeciesSettings.h"
 #include "Settings/SlimeMoldSettings.h"
 

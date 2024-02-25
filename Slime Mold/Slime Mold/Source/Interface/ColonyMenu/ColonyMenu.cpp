@@ -7,14 +7,12 @@
 #include "Simulation/SlimeMold/SlimeMold.h"
 #include "Simulation/ColonyCodec/ColonyCodec.h"
 #include "Interface/LoadColonyModal/LoadColonyModal.h"
+#include "Settings/SpawnModes.h"
 #include "Settings/MainSettings.h"
 #include "Settings/SpeciesSettings.h"
 #include "Settings/SlimeMoldSettings.h"
 
 using namespace ImGui;
-
-constexpr char spawnModeLabels[] =
-	"Random\0Point\0Inward Circle\0Outward Circle\0Random Circle\0Missile\0\0";
 
 ColonyMenu::ColonyMenu() :
 	colonyCodec(std::make_unique<ColonyCodec>()),
@@ -188,7 +186,7 @@ void ColonyMenu::RenderCellSection(SpeciesSettings& species)
 
 		SeparatorText("Spawn Mode");
 
-		if (Combo("##comboSpawnMode", (int*)&species.spawnMode, spawnModeLabels))
+		if (Combo("##comboSpawnMode", (int*)&species.spawnMode, SpawnModeLabels))
 			slimeSim->SetPendingRestart();
 	}
 }

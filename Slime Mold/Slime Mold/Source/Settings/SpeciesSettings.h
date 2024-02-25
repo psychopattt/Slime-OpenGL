@@ -2,7 +2,7 @@
 
 #include <array>
 
-#include "Settings/SpawnMode.h"
+#include "Settings/SpawnModes.h"
 
 struct ShaderSpeciesSettings
 {

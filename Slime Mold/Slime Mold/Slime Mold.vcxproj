@@ -140,7 +140,7 @@
     <ClInclude Include="Source\Settings\FilterSettings.h" />
     <ClInclude Include="Source\Settings\WrapSettings.h" />
     <ClInclude Include="Source\Simulation\ColonyCodec\ColonyCodec.h" />
-    <ClInclude Include="Source\Settings\SpawnMode.h" />
+    <ClInclude Include="Source\Settings\SpawnModes.h" />
     <ClInclude Include="Source\Simulation\ColonyBuilder\ColonyBuilder.h" />
     <ClInclude Include="OCSFW\Libraries\include\glad\gl.h" />
     <ClInclude Include="OCSFW\Libraries\include\GLFW\glfw3.h" />
