@@ -22,8 +22,9 @@ class ColonyBuilder
 		std::mt19937 randomEngine;
 		std::uniform_real_distribution<float> randomDistribution;
 
+		void GenerateSettings(unsigned int width, unsigned int height);
 		void BuildSpecies(std::vector<SlimeCell>& cells,
-			int speciesIndex, const SpeciesSettings& cellCount,
+			int speciesIndex, const SpeciesSettings& species,
 			unsigned int width, unsigned int height);
 
 		void GenerateCellSpawn(SlimeCell& cell, SpawnMode spawnMode,

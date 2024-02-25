@@ -14,13 +14,18 @@ ColonyBuilder::ColonyBuilder()
 	randomDistribution = std::uniform_real_distribution<float>(0, 1);
 }
 
-vector<SlimeCell> ColonyBuilder::BuildColony(unsigned int width,
-	unsigned int height, int totalCells)
+void ColonyBuilder::GenerateSettings(unsigned int width, unsigned int height)
 {
 	center[0] = width / 2.0f;
 	center[1] = height / 2.0f;
 	missileAngle = Random01() * SlimeMoldSettings::Tau;
 	smallestDimension = width < height ? width : height;
+}
+
+vector<SlimeCell> ColonyBuilder::BuildColony(unsigned int width,
+	unsigned int height, int totalCells)
+{
+	GenerateSettings(width, height);
 
 	int speciesIndex = 0;
 	vector<SlimeCell> cells;
@@ -49,7 +54,7 @@ void ColonyBuilder::BuildSpecies(vector<SlimeCell>& cells,
 		SlimeCell cell = SlimeCell();
 		cell.speciesIndex = speciesIndex;
 
-		for (int j = 0; j < Colony.size(); j++)
+		for (int j = 0; j < 3; j++)
 			cell.speciesMask[j] = speciesIndex == j;
 
 		GenerateCellSpawn(cell, species.spawnMode, width, height);
