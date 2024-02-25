@@ -83,7 +83,7 @@ void ColonyMenu::RenderWindowPopup()
 		}
 
 		if (MenuItem("Load Colony"))
-			SlimeMoldSettings::ShowLoadModal = true;
+			loadModal->Show();
 
 		if (MenuItem("Copy Colony"))
 		{

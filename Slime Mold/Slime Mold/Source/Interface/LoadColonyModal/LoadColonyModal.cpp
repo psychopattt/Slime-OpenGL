@@ -2,13 +2,11 @@
 
 #include "imgui/imgui.h"
 
-#include "Settings/SlimeMoldSettings.h"
-
 using namespace ImGui;
 
 void LoadColonyModal::Render()
 {
-	if (SlimeMoldSettings::ShowLoadModal)
+	if (visible)
 		OpenPopup("Load Colony");
 
 	if (BeginPopupModal("Load Colony", NULL, ImGuiWindowFlags_AlwaysAutoResize))
@@ -32,12 +30,17 @@ void LoadColonyModal::Render()
 	}
 }
 
+void LoadColonyModal::Show()
+{
+	visible = true;
+}
+
 void LoadColonyModal::ExitPopup(bool hasNewResult)
 {
 	this->hasNewResult = hasNewResult;
 	result = hasNewResult ? input : "";
-	SlimeMoldSettings::ShowLoadModal = false;
 	CloseCurrentPopup();
+	visible = false;
 	input[0] = '\0';
 }
 
