@@ -4,6 +4,8 @@
 
 #include "Simulation/SlimeMold/SlimeMold.h"
 #include "Settings/MainSettings.h"
+#include "Settings/WrapSettings.h"
+#include "Settings/FilterSettings.h"
 #include "Settings/SlimeMoldSettings.h"
 
 using namespace ImGui;
@@ -19,12 +21,10 @@ void SlimeMoldMenu::Render()
 	{
 		if (CollapsingHeader("Slime Mold"))
 		{
-			using namespace SlimeMoldSettings;
-
 			PushItemWidth(-1);
-			Checkbox("Show Colony Menu", &ShowColonyMenu);
-			RenderParameterCombo("Wrap", SelectedWrap, "Mirror\0Border\0Repeat\0Edge\0\0");
-			RenderParameterCombo("Filter", SelectedFilter, "Nearest\0Linear\0\0");
+			Checkbox("Show Colony Menu", &SlimeMoldSettings::ShowColonyMenu);
+			RenderParameterCombo("Wrap", WrapSettings::SelectedSetting, WrapSettings::Labels);
+			RenderParameterCombo("Filter", FilterSettings::SelectedSetting, FilterSettings::Labels);
 			PopItemWidth();
 		}
 	}

@@ -137,6 +137,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Interface\LoadColonyModal\LoadColonyModal.h" />
+    <ClInclude Include="Source\Settings\FilterSettings.h" />
+    <ClInclude Include="Source\Settings\WrapSettings.h" />
     <ClInclude Include="Source\Simulation\ColonyCodec\ColonyCodec.h" />
     <ClInclude Include="Source\Settings\SpawnMode.h" />
     <ClInclude Include="Source\Simulation\ColonyBuilder\ColonyBuilder.h" />

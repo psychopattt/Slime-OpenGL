@@ -6,6 +6,8 @@
 #include "glad/gl.h"
 
 #include "Settings/SlimeCell.h"
+#include "Settings/WrapSettings.h"
+#include "Settings/FilterSettings.h"
 #include "Settings/SpeciesSettings.h"
 #include "Settings/SlimeMoldSettings.h"
 #include "Shaders/Buffers/Texture/Texture.h"
@@ -16,14 +18,7 @@
 
 using std::make_unique;
 
-static constexpr int wrapSettings[] = {
-	GL_MIRRORED_REPEAT, GL_CLAMP_TO_BORDER, GL_REPEAT, GL_CLAMP_TO_EDGE
-};
-
-static constexpr int filterSettings[] = { GL_NEAREST, GL_LINEAR };
-
-SlimeMold::SlimeMold(int width, int height, unsigned int seed) :
-	Simulation(width, height, seed)
+SlimeMold::SlimeMold(int width, int height) : Simulation(width, height)
 {
 	colonyBuilder = make_unique<ColonyBuilder>();
 };
@@ -60,8 +55,8 @@ void SlimeMold::InitializeTextures()
 
 	displayTexture = make_unique<Texture>(
 		width, height, GL_RGBA32F,
-		wrapSettings[SlimeMoldSettings::SelectedWrap],
-		filterSettings[SlimeMoldSettings::SelectedFilter]
+		WrapSettings::GetSelectedValue(),
+		FilterSettings::GetSelectedValue()
 	);
 }
 
@@ -141,9 +136,8 @@ void SlimeMold::InitializeColony()
 
 void SlimeMold::ApplyTextureSettings()
 {
-	using namespace SlimeMoldSettings;
-	displayTexture->SetWrap(wrapSettings[SelectedWrap]);
-	displayTexture->SetFilter(filterSettings[SelectedFilter]);
+	displayTexture->SetWrap(WrapSettings::GetSelectedValue());
+	displayTexture->SetFilter(FilterSettings::GetSelectedValue());
 }
 
 bool SlimeMold::IsPendingRestart() const
