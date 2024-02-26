@@ -4,8 +4,8 @@
 
 #include "Settings/LogString/LogString.h"
 #include "Settings/MainSettings.h"
-#include "Settings/ColonySettings.h"
 #include "Settings/SlimeMoldSettings.h"
+#include "Settings/Colony/ColonySettings.h"
 
 using std::string, std::to_string, std::vector;
 

@@ -4,9 +4,9 @@
 
 #include "Simulation/SlimeMold/SlimeMold.h"
 #include "Settings/MainSettings.h"
-#include "Settings/WrapSettings.h"
-#include "Settings/FilterSettings.h"
 #include "Settings/SlimeMoldSettings.h"
+#include "Settings/Texture/WrapSettings.h"
+#include "Settings/Texture/FilterSettings.h"
 
 using namespace ImGui;
 

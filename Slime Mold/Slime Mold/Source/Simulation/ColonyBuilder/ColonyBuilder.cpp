@@ -1,7 +1,7 @@
 #include "ColonyBuilder.h"
 
-#include "Settings/SlimeCell.h"
-#include "Settings/ColonySettings.h"
+#include "Settings/Colony/SlimeCell.h"
+#include "Settings/Colony/ColonySettings.h"
 #include "Settings/SlimeMoldSettings.h"
 
 using std::vector;

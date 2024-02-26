@@ -3,10 +3,10 @@
 #include <ctime>
 #include <vector>
 
-#include "Settings/SlimeCell.h"
-#include "Settings/WrapSettings.h"
-#include "Settings/FilterSettings.h"
-#include "Settings/ColonySettings.h"
+#include "Settings/Colony/SlimeCell.h"
+#include "Settings/Colony/ColonySettings.h"
+#include "Settings/Texture/WrapSettings.h"
+#include "Settings/Texture/FilterSettings.h"
 #include "Settings/SlimeMoldSettings.h"
 #include "Shaders/Buffers/Texture/Texture.h"
 #include "Shaders/ComputeShader/ComputeShader.h"

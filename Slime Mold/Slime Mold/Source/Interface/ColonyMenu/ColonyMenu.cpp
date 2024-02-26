@@ -8,7 +8,7 @@
 #include "Simulation/ColonyCodec/ColonyCodec.h"
 #include "Interface/LoadColonyModal/LoadColonyModal.h"
 #include "Settings/MainSettings.h"
-#include "Settings/ColonySettings.h"
+#include "Settings/Colony/ColonySettings.h"
 #include "Settings/SlimeMoldSettings.h"
 
 using namespace ImGui;

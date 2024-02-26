@@ -137,11 +137,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Interface\LoadColonyModal\LoadColonyModal.h" />
-    <ClInclude Include="Source\Settings\ColonySettings.h" />
-    <ClInclude Include="Source\Settings\FilterSettings.h" />
-    <ClInclude Include="Source\Settings\WrapSettings.h" />
+    <ClInclude Include="Source\Settings\Colony\ColonySettings.h" />
+    <ClInclude Include="Source\Settings\Texture\FilterSettings.h" />
+    <ClInclude Include="Source\Settings\Texture\WrapSettings.h" />
     <ClInclude Include="Source\Simulation\ColonyCodec\ColonyCodec.h" />
-    <ClInclude Include="Source\Settings\SpawnModes.h" />
+    <ClInclude Include="Source\Settings\Colony\SpawnModes.h" />
     <ClInclude Include="Source\Simulation\ColonyBuilder\ColonyBuilder.h" />
     <ClInclude Include="OCSFW\Libraries\include\glad\gl.h" />
     <ClInclude Include="OCSFW\Libraries\include\GLFW\glfw3.h" />
@@ -189,10 +189,10 @@
     <ClInclude Include="OCSFW\Source\Simulation\SimulationMath\SimulationMath.h" />
     <ClInclude Include="Source\Interface\SlimeMoldMenu\SlimeMoldMenu.h" />
     <ClInclude Include="Source\Interface\ColonyMenu\ColonyMenu.h" />
-    <ClInclude Include="Source\Settings\SlimeCell.h" />
+    <ClInclude Include="Source\Settings\Colony\SlimeCell.h" />
     <ClInclude Include="Source\Settings\SlimeMoldSettings.h" />
     <ClInclude Include="Source\Simulation\SlimeMold\SlimeMold.h" />
-    <ClInclude Include="Source\Settings\SpeciesSettings.h" />
+    <ClInclude Include="Source\Settings\Colony\SpeciesSettings.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="OCSFW\Libraries\lib\glfw3.lib" />

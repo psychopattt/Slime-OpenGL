@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Settings/SpawnModes.h"
+#include "Settings/Colony/SpawnModes.h"
 
 struct ShaderSpeciesSettings
 {

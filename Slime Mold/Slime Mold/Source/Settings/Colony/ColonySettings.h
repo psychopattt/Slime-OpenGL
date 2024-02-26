@@ -2,7 +2,7 @@
 
 #include <array>
 
-#include "Settings/SpeciesSettings.h"
+#include "Settings/Colony/SpeciesSettings.h"
 
 inline std::array<SpeciesSettings, 3> Colony = {
 	SpeciesSettings({ }, { 1, 1, 1 }, 20, 2, 1, 35, 30, 10, 100, Point, true),
