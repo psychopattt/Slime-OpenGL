@@ -91,6 +91,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Interface\ColonyMenu\Utils\ColonyMenuUtils.cpp" />
     <ClCompile Include="Source\Interface\LoadColonyModal\LoadColonyModal.cpp" />
     <ClCompile Include="Source\Simulation\ColonyCodec\ColonyCodec.cpp" />
     <ClCompile Include="Source\Simulation\ColonyBuilder\ColonyBuilder.cpp" />
@@ -136,6 +137,7 @@
     <ClCompile Include="Source\Simulation\SlimeMold\SlimeMold.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Interface\ColonyMenu\Utils\ColonyMenuUtils.h" />
     <ClInclude Include="Source\Interface\LoadColonyModal\LoadColonyModal.h" />
     <ClInclude Include="Source\Settings\Colony\ColonySettings.h" />
     <ClInclude Include="Source\Settings\Texture\FilterSettings.h" />

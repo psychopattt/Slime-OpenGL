@@ -35,13 +35,6 @@ class ColonyMenu : public ImGuiWindow
 		void RenderSensorsSection(SpeciesSettings& species);
 		void RenderColorSection(SpeciesSettings& species);
 
-		bool RenderParameterSlider(string label, int& parameter, int min, int max);
-		bool RenderParameterSlider(string label, float& parameter, float min, float max);
-		bool RenderParameterDrag(string label, int& parameter, int min, int max, float speed);
-		bool RenderParameterDrag(string label, float& parameter, float min, float max, float speed);
-		bool RenderParameter(string label, bool isDrag, int dataType, void* parameter,
-			const void* min, const void* max, float speed = 0);
-
 		void LoadColony(string colonyString);
 		void UpdateSettings();
 };

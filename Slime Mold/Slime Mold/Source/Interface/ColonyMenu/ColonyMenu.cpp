@@ -10,8 +10,10 @@
 #include "Settings/MainSettings.h"
 #include "Settings/Colony/ColonySettings.h"
 #include "Settings/SlimeMoldSettings.h"
+#include "Utils/ColonyMenuUtils.h"
 
 using namespace ImGui;
+using namespace ColonyMenuUtils;
 
 ColonyMenu::ColonyMenu() :
 	colonyCodec(std::make_unique<ColonyCodec>()),
@@ -166,7 +168,7 @@ void ColonyMenu::RenderEnableSection(struct SpeciesSettings& species)
 
 	SetItemTooltip("Requires Restart");
 	SameLine();
-
+	
 	if (Selectable("Enabled", &species.enabled))
 		slimeSim->SetPendingRestart();
 
@@ -180,7 +182,7 @@ void ColonyMenu::RenderCellSection(SpeciesSettings& species)
 	{
 		SetItemTooltip("Requires Restart");
 
-		if (RenderParameterDrag("Cell Count", species.cellCount, 1, INT32_MAX, 25))
+		if (RenderDrag("Cell Count", species.cellCount, 1, INT32_MAX, 25))
 			slimeSim->SetPendingRestart();
 
 		SeparatorText("Spawn Mode");
@@ -194,8 +196,11 @@ void ColonyMenu::RenderSpeedSection(SpeciesSettings& species)
 {
 	if (CollapsingHeader("Speed"))
 	{
-		RenderParameterDrag("Move Speed", species.moveSpeed, -999, 999, 0.01f);
-		RenderParameterDrag("Turn Speed", species.turnSpeed, -999, 999, 0.01f);
+		if (RenderDrag("Move Speed", species.moveSpeed, -999, 999, 0.01f))
+			changesPending = true;
+
+		if (RenderDrag("Turn Speed", species.turnSpeed, -999, 999, 0.01f))
+			changesPending = true;
 	}
 }
 
@@ -203,9 +208,14 @@ void ColonyMenu::RenderTrailSection(SpeciesSettings& species)
 {
 	if (CollapsingHeader("Trail"))
 	{
-		RenderParameterDrag("Trail Weight", species.trailWeight, 0, 999, 0.01f);
-		RenderParameterDrag("Diffuse Rate", SlimeMoldSettings::DiffuseRate, 0, 999, 0.01f);
-		RenderParameterDrag("Decay Rate", SlimeMoldSettings::DecayRate, 0, 999, 0.005f);
+		if (RenderDrag("Trail Weight", species.trailWeight, 0, 999, 0.01f))
+			changesPending = true;
+
+		if (RenderDrag("Diffuse Rate", SlimeMoldSettings::DiffuseRate, 0, 999, 0.01f))
+			changesPending = true;
+
+		if (RenderDrag("Decay Rate", SlimeMoldSettings::DecayRate, 0, 999, 0.005f))
+			changesPending = true;
 	}
 }
 
@@ -213,9 +223,14 @@ void ColonyMenu::RenderSensorsSection(SpeciesSettings& species)
 {
 	if (CollapsingHeader("Sensors"))
 	{
-		RenderParameterSlider("Sensors Size", species.sensorSize, 1, 10);
-		RenderParameterDrag("Sensors Offset", species.sensorOffset, -999, 999, 0.01f);
-		RenderParameterDrag("Sensors Angle", species.sensorAngleDegrees, -180, 180, 0.1f);
+		if (RenderSlider("Sensors Size", species.sensorSize, 1, 10))
+			changesPending = true;
+
+		if (RenderDrag("Sensors Offset", species.sensorOffset, -999, 999, 0.01f))
+			changesPending = true;
+
+		if (RenderDrag("Sensors Angle", species.sensorAngleDegrees, -180, 180, 0.1f))
+			changesPending = true;
 	}
 }
 
@@ -223,57 +238,9 @@ void ColonyMenu::RenderColorSection(SpeciesSettings& species)
 {
 	if (CollapsingHeader("Color", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		changesPending = ColorEdit3(
-			"##colorPickerSpecies", species.color
-		) || changesPending;
+		if (ColorEdit3("##colorPickerSpecies", species.color))
+			changesPending = true;
 	}
-}
-
-bool ColonyMenu::RenderParameterSlider(string label, int& parameter, int min, int max)
-{
-	return RenderParameter(label, false, ImGuiDataType_S32, &parameter, &min, &max);
-}
-
-bool ColonyMenu::RenderParameterSlider(string label, float& parameter, float min, float max)
-{
-	return RenderParameter(label, false, ImGuiDataType_Float, &parameter, &min, &max);
-}
-
-bool ColonyMenu::RenderParameterDrag(string label, int& parameter, int min, int max, float speed)
-{
-	return RenderParameter(label, true, ImGuiDataType_S32, &parameter, &min, &max, speed);
-}
-
-bool ColonyMenu::RenderParameterDrag(string label, float& parameter, float min, float max, float speed)
-{
-	return RenderParameter(label, true, ImGuiDataType_Float, &parameter, &min, &max, speed);
-}
-
-bool ColonyMenu::RenderParameter(string label, bool isDrag, int dataType, void* parameter,
-	const void* min, const void* max, float speed)
-{
-	SeparatorText(label.c_str());
-	string id = "##drag" + label;
-	bool parameterModified = false;
-
-	if (isDrag)
-	{
-		parameterModified = DragScalar(
-			id.c_str(), dataType, parameter, speed,
-			min, max, NULL, ImGuiSliderFlags_AlwaysClamp
-		);
-	}
-	else
-	{
-		parameterModified = SliderScalar(
-			id.c_str(), dataType, parameter, min,
-			max, NULL, ImGuiSliderFlags_AlwaysClamp
-		);
-	}
-
-	changesPending = changesPending || parameterModified;
-
-	return parameterModified;
 }
 
 void ColonyMenu::LoadColony(string colonyString)
