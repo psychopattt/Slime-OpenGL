@@ -95,8 +95,8 @@ void SteerCell(uint cellId, uint random)
     SlimeCell cell = Cells[cellId];
     SpeciesSettings species = Colony[cell.speciesIndex];
 
-    float turnSpeed = species.turnSpeed * tau;
     float steerStrength = NormalizeUnsignedInt(random);
+    float turnSpeed = species.turnSpeed * tau * globalSpeed;
 
     float forwardWeight = SenseTrail(cell, 0);
     float sensorAngleRad = radians(species.sensorAngleDegrees);
@@ -106,11 +106,11 @@ void SteerCell(uint cellId, uint random)
     if (forwardWeight <= leftWeight || forwardWeight <= rightWeight)
     {
         if (forwardWeight < leftWeight && forwardWeight < rightWeight) // Turn randomly
-            Cells[cellId].angle += (steerStrength - 0.5) * 2 * turnSpeed * globalSpeed;
+            Cells[cellId].angle += (steerStrength - 0.5) * 2 * turnSpeed;
         else if (rightWeight > leftWeight) // Turn right
-            Cells[cellId].angle -= steerStrength * turnSpeed * globalSpeed;
+            Cells[cellId].angle -= steerStrength * turnSpeed;
         else if (leftWeight > rightWeight) // Turn left
-            Cells[cellId].angle += steerStrength * turnSpeed * globalSpeed;
+            Cells[cellId].angle += steerStrength * turnSpeed;
     }
 }
 
@@ -135,7 +135,10 @@ void MoveCell(uint cellId, uint random)
     {
         ivec2 newTrailCoords = ivec2(newPos);
         vec4 oldTrailData = imageLoad(trailTexture, newTrailCoords);
-        vec4 newTrailData = min(vec4(1), oldTrailData + species.mask * species.trailWeight * globalSpeed);
+        vec4 newTrailData = min(vec4(1),
+            oldTrailData + species.mask * species.trailWeight * globalSpeed
+        );
+
         imageStore(trailTexture, newTrailCoords, newTrailData);
     }
 
