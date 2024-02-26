@@ -7,9 +7,8 @@
 #include "Simulation/SlimeMold/SlimeMold.h"
 #include "Simulation/ColonyCodec/ColonyCodec.h"
 #include "Interface/LoadColonyModal/LoadColonyModal.h"
-#include "Settings/SpawnModes.h"
 #include "Settings/MainSettings.h"
-#include "Settings/SpeciesSettings.h"
+#include "Settings/ColonySettings.h"
 #include "Settings/SlimeMoldSettings.h"
 
 using namespace ImGui;

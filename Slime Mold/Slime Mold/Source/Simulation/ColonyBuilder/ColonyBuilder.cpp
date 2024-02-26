@@ -1,8 +1,7 @@
 #include "ColonyBuilder.h"
 
 #include "Settings/SlimeCell.h"
-#include "Settings/SpawnModes.h"
-#include "Settings/SpeciesSettings.h"
+#include "Settings/ColonySettings.h"
 #include "Settings/SlimeMoldSettings.h"
 
 using std::vector;

@@ -6,7 +6,7 @@
 #include "Settings/SlimeCell.h"
 #include "Settings/WrapSettings.h"
 #include "Settings/FilterSettings.h"
-#include "Settings/SpeciesSettings.h"
+#include "Settings/ColonySettings.h"
 #include "Settings/SlimeMoldSettings.h"
 #include "Shaders/Buffers/Texture/Texture.h"
 #include "Shaders/ComputeShader/ComputeShader.h"
