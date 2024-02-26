@@ -284,10 +284,7 @@ void ColonyMenu::LoadColony(string colonyString)
 	if (!loadedColony.empty())
 	{
 		for (int speciesId = 0; speciesId < loadedColony.size(); speciesId++)
-		{
-			loadedColony[speciesId].wasEnabled = Colony[speciesId].wasEnabled;
 			Colony[speciesId] = loadedColony[speciesId];
-		}
 
 		slimeSim->SetPendingRestart();
 		changesPending = true;

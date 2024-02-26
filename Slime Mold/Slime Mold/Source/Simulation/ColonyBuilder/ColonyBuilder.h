@@ -24,7 +24,7 @@ class ColonyBuilder
 
 		void GenerateSettings(unsigned int width, unsigned int height);
 		void BuildSpecies(std::vector<SlimeCell>& cells,
-			int speciesIndex, const SpeciesSettings& species,
+			int speciesIndex, SpeciesSettings& species,
 			unsigned int width, unsigned int height);
 
 		void GenerateCellSpawn(SlimeCell& cell, SpawnMode spawnMode,

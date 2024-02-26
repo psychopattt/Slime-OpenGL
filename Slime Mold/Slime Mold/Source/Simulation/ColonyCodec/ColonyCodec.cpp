@@ -77,15 +77,32 @@ vector<SpeciesSettings> ColonyCodec::DecodeColony(const string& colonyString) co
 
 		for (size_t i = 0; i < colonySize; i++)
 		{
+			SpeciesSettings species = SpeciesSettings();
 			vector<string> speciesParams = SplitString(colonyParams[i + 1], paramDelimiter);
-			colony[i] = SpeciesSettings(
-				{ stof(speciesParams.at(0)), stof(speciesParams.at(1)), stof(speciesParams.at(2)) },
-				stof(speciesParams.at(3)), stof(speciesParams.at(4)), stoi(speciesParams.at(5)),
-				stof(speciesParams.at(6)), stof(speciesParams.at(7)), stof(speciesParams.at(8)),
-				stoi(speciesParams.at(9)), SpawnMode(stoi(speciesParams.at(10))), true
-			);
+
+			for (int channelId = 0; channelId < 3; channelId++)
+				species.color[channelId] = stof(speciesParams.at(channelId));
+
+			species.moveSpeed = stof(speciesParams.at(3));
+			species.turnSpeed = stof(speciesParams.at(4));
+			species.sensorSize = stoi(speciesParams.at(5));
+			species.sensorOffset = stof(speciesParams.at(6));
+			species.sensorAngleDegrees = stof(speciesParams.at(7));
+			species.trailWeight = stof(speciesParams.at(8));
+			species.cellCount = stoi(speciesParams.at(9));
+			species.spawnMode = SpawnMode(stoi(speciesParams.at(10)));
+			species.enabled = true;
+			colony[i] = species;
 		}
 		
+		for (int i = 0; i < Colony.size(); i++)
+		{
+			colony[i].wasEnabled = Colony[i].wasEnabled;
+
+			for (int j = 0; j < std::size(colony[i].mask); j++)
+				colony[i].mask[j] = Colony[i].mask[j];
+		}
+
 		vector<string> globalParams = SplitString(colonyParams.at(0), paramDelimiter);
 		SlimeMoldSettings::DiffuseRate = stof(globalParams.at(0));
 		SlimeMoldSettings::DecayRate = stof(globalParams.at(1));

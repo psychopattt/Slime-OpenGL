@@ -4,6 +4,7 @@ layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
 
 struct SpeciesSettings
 {
+    vec4 mask;
     vec4 color;
 
     float moveSpeed;
@@ -38,10 +39,7 @@ void main()
     vec4 color = vec4(0);
 
     for (uint i = 0; i < colonySize; i++)
-    {
-        vec4 mask = vec4(i == 0, i == 1, i == 2, i == 3);
-        color += Colony[i].color * dot(trailData, mask);
-    }
+        color += Colony[i].color * dot(trailData, Colony[i].mask);
 
     imageStore(displayTexture, position, color);
 }

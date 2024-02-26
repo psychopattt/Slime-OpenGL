@@ -3,8 +3,6 @@
 #include <ctime>
 #include <vector>
 
-#include "glad/gl.h"
-
 #include "Settings/SlimeCell.h"
 #include "Settings/WrapSettings.h"
 #include "Settings/FilterSettings.h"
@@ -31,6 +29,8 @@ void SlimeMold::Initialize(int width, int height, unsigned int seed)
 	InitializeTextures();
 	InitializeShaders();
 	InitializeColony();
+	ApplyShaderSettings();
+	ApplyTextureSettings();
 	simDrawer = make_unique<SimulationDrawer>();
 }
 
@@ -41,8 +41,6 @@ void SlimeMold::InitializeSettings()
 
 	for (SpeciesSettings& species : Colony)
 	{
-		species.wasEnabled = species.enabled;
-
 		if (species.enabled)
 			totalCells += species.cellCount;
 	}
@@ -52,12 +50,7 @@ void SlimeMold::InitializeTextures()
 {
 	trailTexture = make_unique<Texture>(width, height);
 	diffusedTrailTexture = make_unique<Texture>(width, height);
-
-	displayTexture = make_unique<Texture>(
-		width, height, GL_RGBA32F,
-		WrapSettings::GetSelectedValue(),
-		FilterSettings::GetSelectedValue()
-	);
+	displayTexture = make_unique<Texture>(width, height);
 }
 
 void SlimeMold::InitializeShaders()
@@ -66,7 +59,6 @@ void SlimeMold::InitializeShaders()
 	InitializeDiffuseShader();
 	InitializeColorShader();
 	InitializeCopyShader();
-	ApplyShaderSettings();
 }
 
 void SlimeMold::InitializeSlimeShader()
@@ -103,6 +95,14 @@ void SlimeMold::InitializeCopyShader()
 	copyShader->SetTextureBinding("target", trailTexture->GetId());
 }
 
+void SlimeMold::InitializeColony()
+{
+	std::vector<SlimeCell> cells = colonyBuilder->BuildColony(width, height, totalCells);
+	cellBuffer = make_unique<ComputeBuffer>(cells.data(), cells.size() * sizeof(cells[0]));
+	slimeShader->SetInt("cellCount", static_cast<unsigned int>(cells.size()));
+	slimeShader->SetBufferBinding("slimeCells", cellBuffer->GetId());
+}
+
 void SlimeMold::ApplyShaderSettings()
 {
 	std::vector<ShaderSpeciesSettings> enabledSpecies;
@@ -124,14 +124,6 @@ void SlimeMold::ApplyShaderSettings()
 
 	diffuseShader->SetFloat("diffuseRate", SlimeMoldSettings::DiffuseRate);
 	diffuseShader->SetFloat("decayRate", SlimeMoldSettings::DecayRate);
-}
-
-void SlimeMold::InitializeColony()
-{
-	std::vector<SlimeCell> cells = colonyBuilder->BuildColony(width, height, totalCells);
-	cellBuffer = make_unique<ComputeBuffer>(cells.data(), cells.size() * sizeof(cells[0]));
-	slimeShader->SetInt("cellCount", static_cast<unsigned int>(cells.size()));
-	slimeShader->SetBufferBinding("slimeCells", cellBuffer->GetId());
 }
 
 void SlimeMold::ApplyTextureSettings()

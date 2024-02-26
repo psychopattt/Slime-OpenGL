@@ -6,13 +6,12 @@ struct SlimeCell
 {
     vec2 position;
     float angle;
-
     int speciesIndex;
-    vec4 speciesMask;
 };
 
 struct SpeciesSettings
 {
+    vec4 mask;
     vec4 color;
 
     float moveSpeed;
@@ -71,7 +70,7 @@ float SenseTrail(SlimeCell cell, float sensorAngleOffset)
     vec2 sensorDirection = vec2(cos(sensorAngle), sin(sensorAngle));
     vec2 sensorPosition = sensorDirection * species.sensorOffset + cell.position;
 
-    ivec4 senseWeight = ivec4(cell.speciesMask * 2 - 1);
+    ivec4 senseWeight = ivec4(species.mask * 2 - 1);
     float senseTotal = 0;
 
     for (int offsetY = -sensorSize; offsetY <= sensorSize; offsetY++)
@@ -136,7 +135,7 @@ void MoveCell(uint cellId, uint random)
     {
         ivec2 newTrailCoords = ivec2(newPos);
         vec4 oldTrailData = imageLoad(trailTexture, newTrailCoords);
-        vec4 newTrailData = min(vec4(1), oldTrailData + cell.speciesMask * species.trailWeight * globalSpeed);
+        vec4 newTrailData = min(vec4(1), oldTrailData + species.mask * species.trailWeight * globalSpeed);
         imageStore(trailTexture, newTrailCoords, newTrailData);
     }
 
