@@ -11,9 +11,9 @@ layout(RGBA32F) restrict readonly uniform image2D trailTexture;
 
 const float globalSpeed = 0.02;
 
-vec4 GetAverageNeighborColor(ivec2 position)
+vec4 GetAverageNeighborTrail(ivec2 position)
 {
-    vec4 totalColor = vec4(0);
+    vec4 totalTrail = vec4(0);
 
     for (int offsetY = -1; offsetY < 2; offsetY++)
     {
@@ -24,11 +24,11 @@ vec4 GetAverageNeighborColor(ivec2 position)
                 clamp(position.y + offsetY, 0, height - 1)
             );
 
-            totalColor += imageLoad(trailTexture, samplePosition);
+            totalTrail += imageLoad(trailTexture, samplePosition);
         }
     }
 
-    return totalColor / 9;
+    return totalTrail / 9;
 }
 
 void main()
@@ -38,11 +38,11 @@ void main()
     if (position.x >= width || position.y >= height)
         return;
 
-    vec4 color = imageLoad(trailTexture, position);
-    vec4 averageNeighborColor = GetAverageNeighborColor(position);
+    vec4 trail = imageLoad(trailTexture, position);
+    vec4 averageNeighborTrail = GetAverageNeighborTrail(position);
     float diffuseWeight = clamp(diffuseRate * globalSpeed, 0.0, 1.0);
-    vec4 mergedColor = (1 - diffuseWeight) * color + diffuseWeight * averageNeighborColor;
-    vec4 decayedColor = max(vec4(0), mergedColor - decayRate * globalSpeed);
+    vec4 mergedTrail = (1 - diffuseWeight) * trail + diffuseWeight * averageNeighborTrail;
+    vec4 decayedTrail = max(vec4(0), mergedTrail - decayRate * globalSpeed);
 
-    imageStore(diffusedTrailTexture, position, decayedColor);
+    imageStore(diffusedTrailTexture, position, decayedTrail);
 }
