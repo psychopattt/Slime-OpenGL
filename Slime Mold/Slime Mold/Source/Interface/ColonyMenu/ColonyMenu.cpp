@@ -237,7 +237,10 @@ void ColonyMenu::RenderColorSection(SpeciesSettings& species)
 {
 	if (CollapsingHeader("Color", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		if (ColorEdit3("##colorPickerSpecies", species.color))
+		if (RenderColorEdit("Main Color", species.mainColor))
+			slimeSim->ApplyShaderSettings();
+
+		if (RenderColorEdit("Edge Color", species.edgeColor))
 			slimeSim->ApplyShaderSettings();
 	}
 }

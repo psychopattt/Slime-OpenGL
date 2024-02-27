@@ -12,7 +12,8 @@ struct SlimeCell
 struct SpeciesSettings
 {
     vec4 mask;
-    vec4 color;
+    vec4 mainColor;
+    vec4 edgeColor;
 
     float moveSpeed;
     float turnSpeed;

@@ -48,3 +48,11 @@ bool ColonyMenuUtils::RenderDrag(string label, float& parameter, float min, floa
 {
 	return RenderDragInternal(label, ImGuiDataType_Float, &parameter, &min, &max, speed);
 }
+
+bool ColonyMenuUtils::RenderColorEdit(string label, float* color)
+{
+	ImGui::SeparatorText(label.c_str());
+	string id = "##colorEdit" + label;
+
+	return ImGui::ColorEdit3(id.c_str(), color);
+}

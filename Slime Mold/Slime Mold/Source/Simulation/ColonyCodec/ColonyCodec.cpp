@@ -34,8 +34,11 @@ string ColonyCodec::EncodeColony(const vector<SpeciesSettings>& colony) const
 		if (!species.enabled)
 			continue;
 
-		for (int channelId = 0; channelId < 3; channelId++)
-			colonyString += FormatNumber(species.color[channelId]) + paramDelimiter;
+		for (size_t channelId = 0; channelId < 3; channelId++)
+			colonyString += FormatNumber(species.mainColor[channelId]) + paramDelimiter;
+
+		for (size_t channelId = 0; channelId < 3; channelId++)
+			colonyString += FormatNumber(species.edgeColor[channelId]) + paramDelimiter;
 
 		colonyString +=
 			FormatNumber(species.moveSpeed) + paramDelimiter +
@@ -80,17 +83,20 @@ vector<SpeciesSettings> ColonyCodec::DecodeColony(const string& colonyString) co
 			SpeciesSettings species = SpeciesSettings();
 			vector<string> speciesParams = SplitString(colonyParams[i + 1], paramDelimiter);
 
-			for (int channelId = 0; channelId < 3; channelId++)
-				species.color[channelId] = stof(speciesParams.at(channelId));
+			for (size_t channelId = 0; channelId < 3; channelId++)
+				species.mainColor[channelId] = stof(speciesParams.at(channelId));
 
-			species.moveSpeed = stof(speciesParams.at(3));
-			species.turnSpeed = stof(speciesParams.at(4));
-			species.sensorSize = stoi(speciesParams.at(5));
-			species.sensorOffset = stof(speciesParams.at(6));
-			species.sensorAngleDegrees = stof(speciesParams.at(7));
-			species.trailWeight = stof(speciesParams.at(8));
-			species.cellCount = stoi(speciesParams.at(9));
-			species.spawnMode = SpawnMode(stoi(speciesParams.at(10)));
+			for (size_t channelId = 0; channelId < 3; channelId++)
+				species.edgeColor[channelId] = stof(speciesParams.at(channelId + 3));
+
+			species.moveSpeed = stof(speciesParams.at(6));
+			species.turnSpeed = stof(speciesParams.at(7));
+			species.sensorSize = stoi(speciesParams.at(8));
+			species.sensorOffset = stof(speciesParams.at(9));
+			species.sensorAngleDegrees = stof(speciesParams.at(10));
+			species.trailWeight = stof(speciesParams.at(11));
+			species.cellCount = stoi(speciesParams.at(12));
+			species.spawnMode = SpawnMode(stoi(speciesParams.at(13)));
 			species.enabled = true;
 			colony[i] = species;
 		}

@@ -5,7 +5,8 @@ layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
 struct SpeciesSettings
 {
     vec4 mask;
-    vec4 color;
+    vec4 mainColor;
+    vec4 edgeColor;
 
     float moveSpeed;
     float turnSpeed;
@@ -39,7 +40,12 @@ void main()
     vec4 color = vec4(0);
 
     for (uint i = 0; i < colonySize; i++)
-        color += Colony[i].color * dot(trailData, Colony[i].mask);
+    {
+        SpeciesSettings species = Colony[i];
+        float trailIntensity = dot(trailData, species.mask);
+        vec4 mixedColor = mix(species.edgeColor, species.mainColor, trailIntensity);
+        color += mixedColor * trailIntensity;
+    }
 
     imageStore(displayTexture, position, color);
 }
