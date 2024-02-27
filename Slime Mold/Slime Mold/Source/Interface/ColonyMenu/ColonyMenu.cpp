@@ -48,7 +48,6 @@ void ColonyMenu::Render()
 			for (int id = 0; id < Colony.size(); id++)
 				RenderSpeciesTab(id);
 
-			UpdateSettings();
 			EndTabBar();
 		}
 
@@ -78,7 +77,7 @@ void ColonyMenu::RenderWindowPopup()
 					LoadColony(ColonyPresets[i]);
 			}
 
-			ImGui::EndMenu();
+			EndMenu();
 		}
 
 		if (MenuItem("Load Colony"))
@@ -145,19 +144,19 @@ void ColonyMenu::RenderCopyMenu(int speciesId, bool copyDirection)
 	{
 		for (int i = 0; i < Colony.size(); i++)
 		{
-			int sourceId = copyDirection ? speciesId : i;
-			int targetId = copyDirection ? i : speciesId;
+			int sourceId = copyDirection ? i : speciesId;
+			int targetId = copyDirection ? speciesId : i;
 			string menuLabel = "Species " + std::to_string(i + 1);
 
 			if (i != speciesId && MenuItem(menuLabel.c_str()))
 			{
-				Colony[sourceId] = Colony[targetId];
+				Colony[targetId] = Colony[sourceId];
+				slimeSim->ApplyShaderSettings();
 				slimeSim->SetPendingRestart();
-				changesPending = true;
 			}
 		}
 
-		ImGui::EndMenu();
+		EndMenu();
 	}
 }
 
@@ -197,10 +196,10 @@ void ColonyMenu::RenderSpeedSection(SpeciesSettings& species)
 	if (CollapsingHeader("Speed"))
 	{
 		if (RenderDrag("Move Speed", species.moveSpeed, -999, 999, 0.01f))
-			changesPending = true;
+			slimeSim->ApplyShaderSettings();
 
 		if (RenderDrag("Turn Speed", species.turnSpeed, -999, 999, 0.01f))
-			changesPending = true;
+			slimeSim->ApplyShaderSettings();
 	}
 }
 
@@ -209,13 +208,13 @@ void ColonyMenu::RenderTrailSection(SpeciesSettings& species)
 	if (CollapsingHeader("Trail"))
 	{
 		if (RenderDrag("Trail Weight", species.trailWeight, 0, 999, 0.01f))
-			changesPending = true;
+			slimeSim->ApplyShaderSettings();
 
 		if (RenderDrag("Diffuse Rate", SlimeMoldSettings::DiffuseRate, 0, 999, 0.01f))
-			changesPending = true;
+			slimeSim->ApplyShaderSettings();
 
 		if (RenderDrag("Decay Rate", SlimeMoldSettings::DecayRate, 0, 999, 0.005f))
-			changesPending = true;
+			slimeSim->ApplyShaderSettings();
 	}
 }
 
@@ -224,13 +223,13 @@ void ColonyMenu::RenderSensorsSection(SpeciesSettings& species)
 	if (CollapsingHeader("Sensors"))
 	{
 		if (RenderSlider("Sensors Size", species.sensorSize, 1, 10))
-			changesPending = true;
+			slimeSim->ApplyShaderSettings();
 
 		if (RenderDrag("Sensors Offset", species.sensorOffset, -999, 999, 0.01f))
-			changesPending = true;
+			slimeSim->ApplyShaderSettings();
 
 		if (RenderDrag("Sensors Angle", species.sensorAngleDegrees, -180, 180, 0.1f))
-			changesPending = true;
+			slimeSim->ApplyShaderSettings();
 	}
 }
 
@@ -239,30 +238,22 @@ void ColonyMenu::RenderColorSection(SpeciesSettings& species)
 	if (CollapsingHeader("Color", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		if (ColorEdit3("##colorPickerSpecies", species.color))
-			changesPending = true;
+			slimeSim->ApplyShaderSettings();
 	}
 }
 
 void ColonyMenu::LoadColony(string colonyString)
 {
-	std::vector<SpeciesSettings> loadedColony = colonyCodec->DecodeColony(colonyString);
+	std::vector<SpeciesSettings> loadedColony =
+		colonyCodec->DecodeColony(colonyString);
 
 	if (!loadedColony.empty())
 	{
 		for (int speciesId = 0; speciesId < loadedColony.size(); speciesId++)
 			Colony[speciesId] = loadedColony[speciesId];
 
-		slimeSim->SetPendingRestart();
-		changesPending = true;
-	}
-}
-
-void ColonyMenu::UpdateSettings()
-{
-	if (changesPending)
-	{
 		slimeSim->ApplyShaderSettings();
-		changesPending = false;
+		slimeSim->SetPendingRestart();
 	}
 }
 

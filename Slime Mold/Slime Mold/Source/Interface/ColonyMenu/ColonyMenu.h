@@ -18,7 +18,6 @@ class ColonyMenu : public ImGuiWindow
 		~ColonyMenu();
 
 	private:
-		bool changesPending = false;
 		class SlimeMold* slimeSim = nullptr;
 		const std::unique_ptr<class LoadColonyModal> loadModal;
 		const std::unique_ptr<const class ColonyCodec> colonyCodec;
@@ -36,5 +35,4 @@ class ColonyMenu : public ImGuiWindow
 		void RenderColorSection(SpeciesSettings& species);
 
 		void LoadColony(string colonyString);
-		void UpdateSettings();
 };
