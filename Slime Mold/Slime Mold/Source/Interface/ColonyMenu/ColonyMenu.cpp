@@ -150,7 +150,13 @@ void ColonyMenu::RenderCopyMenu(int speciesId, bool copyDirection)
 
 			if (i != speciesId && MenuItem(menuLabel.c_str()))
 			{
-				Colony[targetId] = Colony[sourceId];
+				SpeciesSettings speciesCopy = SpeciesSettings(Colony[sourceId]);
+				speciesCopy.wasEnabled = Colony[targetId].wasEnabled;
+
+				for (int i = 0; i < std::size(speciesCopy.mask); i++)
+					speciesCopy.mask[i] = Colony[targetId].mask[i];
+
+				Colony[targetId] = speciesCopy;
 				slimeSim->ApplyShaderSettings();
 				slimeSim->SetPendingRestart();
 			}
