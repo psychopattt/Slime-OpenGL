@@ -7,8 +7,9 @@ enum SpawnMode : int
 	InwardCircle = 2,
 	OutwardCircle = 3,
 	RandomCircle = 4,
-	Missile = 5
+	RandomPoints = 5,
+	Missile = 6
 };
 
 constexpr char SpawnModeLabels[] = "Random\0Point\0Inward Circle"
-	"\0Outward Circle\0Random Circle\0Missile\0\0";
+	"\0Outward Circle\0Random Circle\0Random Points\0Missile\0\0";

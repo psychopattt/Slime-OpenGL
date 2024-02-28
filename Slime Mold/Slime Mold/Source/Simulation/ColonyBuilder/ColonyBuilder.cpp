@@ -19,6 +19,12 @@ void ColonyBuilder::GenerateSettings(unsigned int width, unsigned int height)
 	center[1] = height / 2.0f;
 	missileAngle = Random01() * SlimeMoldSettings::Tau;
 	smallestDimension = width < height ? width : height;
+
+	for (int i = 0; i < std::size(randomPoints); i++)
+	{
+		randomPoints[i][0] = Random01() * width;
+		randomPoints[i][1] = Random01() * height;
+	}
 }
 
 vector<SlimeCell> ColonyBuilder::BuildColony(unsigned int width,
@@ -88,6 +94,10 @@ void ColonyBuilder::GenerateCellSpawn(SlimeCell& cell,
 			break;
 		case RandomCircle:
 			RandomCirclePosition(cell.position, smallestDimension * 0.15f);
+			break;
+		case RandomPoints:
+			cell.position[0] = randomPoints[cell.speciesIndex][0];
+			cell.position[1] = randomPoints[cell.speciesIndex][1];
 			break;
 		case Missile:
 			cell.position[0] = center[0];

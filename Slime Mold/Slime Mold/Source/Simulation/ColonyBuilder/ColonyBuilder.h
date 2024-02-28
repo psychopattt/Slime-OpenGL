@@ -17,6 +17,7 @@ class ColonyBuilder
 	private:
 		float missileAngle = 0;
 		float center[2] = { 0, 0 };
+		float randomPoints[3][2] = { };
 		unsigned int smallestDimension = 0;
 
 		std::mt19937 randomEngine;
