@@ -3,13 +3,15 @@
 enum SpawnMode : int
 {
 	Random = 0,
-	Point = 1,
-	InwardCircle = 2,
-	OutwardCircle = 3,
-	RandomCircle = 4,
-	RandomPoints = 5,
-	Missile = 6
+	Center = 1,
+	Circle = 2,
+	InwardCircle = 3,
+	OutwardCircle = 4,
+	RandomCircle = 5,
+	RandomPoint = 6,
+	Missile = 7
 };
 
-constexpr char SpawnModeLabels[] = "Random\0Point\0Inward Circle"
-	"\0Outward Circle\0Random Circle\0Random Points\0Missile\0\0";
+constexpr char SpawnModeLabels[] = "Random\0Center\0Circle\0"
+	"Inward Circle\0Outward Circle\0Random Circle\0"
+	"Random Point\0Missile\0\0";

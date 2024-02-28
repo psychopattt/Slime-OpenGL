@@ -52,9 +52,8 @@ vector<SlimeCell> ColonyBuilder::BuildColony(unsigned int width,
 	return cells;
 }
 
-void ColonyBuilder::BuildSpecies(vector<SlimeCell>& cells,
-	int speciesIndex, SpeciesSettings& species,
-	unsigned int width, unsigned int height)
+void ColonyBuilder::BuildSpecies(vector<SlimeCell>& cells, int speciesIndex,
+	SpeciesSettings& species, unsigned int width, unsigned int height)
 {
 	for (int i = 0; i < std::size(species.mask); i++)
 		species.mask[i] = speciesIndex == i;
@@ -69,8 +68,8 @@ void ColonyBuilder::BuildSpecies(vector<SlimeCell>& cells,
 	}
 }
 
-void ColonyBuilder::GenerateCellSpawn(SlimeCell& cell,
-	SpawnMode spawnMode, unsigned int width, unsigned int height)
+void ColonyBuilder::GenerateCellSpawn(SlimeCell& cell, SpawnMode spawnMode,
+	unsigned int width, unsigned int height)
 {
 	cell.angle = Random01() * SlimeMoldSettings::Tau;
 
@@ -80,22 +79,26 @@ void ColonyBuilder::GenerateCellSpawn(SlimeCell& cell,
 			cell.position[0] = Random01() * width;
 			cell.position[1] = Random01() * height;
 			break;
-		case Point:
+		case Center:
 			cell.position[0] = center[0];
 			cell.position[1] = center[1];
 			break;
+		case Circle:
+			RandomCirclePosition(cell.position, center, smallestDimension * 0.16f);
+			break;
 		case InwardCircle:
-			RandomCirclePosition(cell.position, smallestDimension / 2.0f);
+			RandomCirclePosition(cell.position, center, smallestDimension / 2.0f);
 			cell.angle = atan2(center[1] - cell.position[1], center[0] - cell.position[0]);
 			break;
 		case OutwardCircle:
-			RandomCirclePosition(cell.position, smallestDimension * 0.15f);
+			RandomCirclePosition(cell.position, center, smallestDimension * 0.16f);
 			cell.angle = atan2(cell.position[1] - center[1], cell.position[0] - center[0]);
 			break;
 		case RandomCircle:
-			RandomCirclePosition(cell.position, smallestDimension * 0.15f);
+			RandomCirclePosition(cell.position, randomPoints[cell.speciesIndex],
+				smallestDimension * 0.16f);
 			break;
-		case RandomPoints:
+		case RandomPoint:
 			cell.position[0] = randomPoints[cell.speciesIndex][0];
 			cell.position[1] = randomPoints[cell.speciesIndex][1];
 			break;
@@ -107,7 +110,7 @@ void ColonyBuilder::GenerateCellSpawn(SlimeCell& cell,
 	}
 }
 
-void ColonyBuilder::RandomCirclePosition(float* position, float radius)
+void ColonyBuilder::RandomCirclePosition(float* position, float* center, float radius)
 {
 	float distanceFromCenter = radius * sqrt(Random01());
 	float angle = Random01() * SlimeMoldSettings::Tau;

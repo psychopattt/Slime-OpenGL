@@ -24,13 +24,12 @@ class ColonyBuilder
 		std::uniform_real_distribution<float> randomDistribution;
 
 		void GenerateSettings(unsigned int width, unsigned int height);
-		void BuildSpecies(std::vector<SlimeCell>& cells,
-			int speciesIndex, SpeciesSettings& species,
-			unsigned int width, unsigned int height);
+		void BuildSpecies(std::vector<SlimeCell>& cells, int speciesIndex, 
+			SpeciesSettings& species, unsigned int width, unsigned int height);
 
 		void GenerateCellSpawn(SlimeCell& cell, SpawnMode spawnMode,
 			unsigned int width, unsigned int height);
 
-		void RandomCirclePosition(float* position, float radius);
+		void RandomCirclePosition(float* position, float* center, float radius);
 		float Random01();
 };
