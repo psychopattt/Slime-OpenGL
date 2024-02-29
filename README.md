@@ -1,5 +1,6 @@
 # Slime Mold
-[Slime mold](https://en.wikipedia.org/wiki/Physarum_polycephalum) simulation using [OCSFW](https://github.com/psychopattt/OCSFW) (GLFW, OpenGL and Dear ImGui)
+[Slime mold](https://en.wikipedia.org/wiki/Physarum_polycephalum) simulation using [OCSFW](https://github.com/psychopattt/OCSFW) (GLFW, OpenGL and Dear ImGui)<br>
+Demo available [here](https://youtu.be/3Hl5o2H3vxo)
 
 ## Features
 - Modify up to 3 slime mold species
