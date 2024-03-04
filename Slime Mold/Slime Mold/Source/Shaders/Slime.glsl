@@ -38,7 +38,7 @@ layout(std430) restrict buffer slimeCells
 
 uniform int width;
 uniform int height;
-layout(RGBA32F) restrict uniform image2D trailTexture;
+layout(rgba32f) restrict uniform image2D trailTexture;
 
 uniform uint seed;
 uniform uint userSeed;

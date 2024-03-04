@@ -7,7 +7,7 @@ uniform int height;
 uniform float decayRate;
 uniform float diffuseRate;
 restrict writeonly uniform image2D diffusedTrailTexture;
-layout(RGBA32F) restrict readonly uniform image2D trailTexture;
+layout(rgba32f) restrict readonly uniform image2D trailTexture;
 
 const float globalSpeed = 0.02;
 

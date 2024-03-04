@@ -24,7 +24,7 @@ layout(std430) restrict readonly buffer colonySettings
     SpeciesSettings Colony[];
 };
 
-layout(RGBA32F) restrict readonly uniform image2D trailTexture;
+layout(rgba32f) restrict readonly uniform image2D trailTexture;
 restrict writeonly uniform image2D displayTexture;
 uniform int height;
 uniform int width;
