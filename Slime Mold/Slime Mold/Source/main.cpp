@@ -12,7 +12,10 @@ int main()
 	ColonyMenu colonyMenu = ColonyMenu();
 	ImGuiWindow* menus[] = { &moldMenu, &colonyMenu };
 
-	OCSFW(&simulation, "Slime Mold", menus, std::size(menus));
+	OCSFW(&simulation)
+		.WithMenus(menus, std::size(menus))
+		.WithTitle("Slime Mold")
+		.Run();
 
 	return EXIT_SUCCESS;
 }
