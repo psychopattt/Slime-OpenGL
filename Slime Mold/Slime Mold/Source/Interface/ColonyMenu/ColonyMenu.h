@@ -23,7 +23,7 @@ class ColonyMenu : public ImGuiWindow
 		const std::unique_ptr<const class ColonyCodec> colonyCodec;
 		
 		void RenderLoadModal();
-		void RenderWindowPopup();
+		void RenderWindowMenuBar();
 		void RenderSpeciesTab(int speciesId);
 		void RenderTabPopup(int speciesId);
 		void RenderCopyMenu(int speciesId, bool copyDirection);

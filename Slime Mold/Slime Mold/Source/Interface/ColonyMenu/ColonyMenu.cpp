@@ -35,12 +35,12 @@ void ColonyMenu::Render()
 	RenderLoadModal();
 	SetNextWindowPos(ImVec2(270, 10), ImGuiCond_FirstUseEver);
 	SetNextWindowSize(ImVec2(311, -1), ImGuiCond_FirstUseEver);
-	int windowFlags = slimeSim->IsPendingRestart() ?
-		ImGuiWindowFlags_UnsavedDocument : ImGuiWindowFlags_None;
+	int windowFlags = ImGuiWindowFlags_MenuBar | (slimeSim->IsPendingRestart() ?
+		ImGuiWindowFlags_UnsavedDocument : ImGuiWindowFlags_None);
 
 	if (Begin("Colony Settings", &ShowColonyMenu, windowFlags))
 	{
-		RenderWindowPopup();
+		RenderWindowMenuBar();
 		PushItemWidth(-1);
 
 		if (BeginTabBar("Species"))
@@ -65,9 +65,9 @@ void ColonyMenu::RenderLoadModal()
 		LoadColony(loadModal->GetResult());
 }
 
-void ColonyMenu::RenderWindowPopup()
+void ColonyMenu::RenderWindowMenuBar()
 {
-	if (BeginPopupContextItem())
+	if (BeginMenuBar())
 	{
 		if (BeginMenu("Load Preset"))
 		{
@@ -80,17 +80,24 @@ void ColonyMenu::RenderWindowPopup()
 			EndMenu();
 		}
 
-		if (MenuItem("Load Colony"))
-			loadModal->Show();
-
 		if (MenuItem("Copy Colony"))
 		{
+			OpenPopup("ColonyCopied");
 			SetClipboardText(colonyCodec->EncodeColony(
 				vector(Colony.begin(), Colony.end())
 			).data());
 		}
 
-		EndPopup();
+		if (BeginPopup("ColonyCopied", ImGuiWindowFlags_NoInputs))
+		{
+			Text("Copied!");
+			EndPopup();
+		}
+
+		if (MenuItem("Load"))
+			loadModal->Show();
+
+		EndMenuBar();
 	}
 }
 
