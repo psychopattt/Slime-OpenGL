@@ -91,6 +91,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Inputs\SlimeMoldKeyboardHandler.cpp" />
     <ClCompile Include="Source\Interface\ColonyMenu\Utils\ColonyMenuUtils.cpp" />
     <ClCompile Include="Source\Interface\LoadColonyModal\LoadColonyModal.cpp" />
     <ClCompile Include="Source\Simulation\ColonyCodec\ColonyCodec.cpp" />
@@ -137,6 +138,7 @@
     <ClCompile Include="Source\Simulation\SlimeMold\SlimeMold.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Inputs\SlimeMoldKeyboardHandler.h" />
     <ClInclude Include="Source\Interface\ColonyMenu\Utils\ColonyMenuUtils.h" />
     <ClInclude Include="Source\Interface\LoadColonyModal\LoadColonyModal.h" />
     <ClInclude Include="Source\Settings\Colony\ColonySettings.h" />

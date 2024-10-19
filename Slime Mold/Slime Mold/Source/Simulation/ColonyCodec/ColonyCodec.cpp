@@ -84,10 +84,10 @@ vector<SpeciesSettings> ColonyCodec::DecodeColony(const string& colonyString) co
 			vector<string> speciesParams = SplitString(colonyParams[i + 1], paramDelimiter);
 
 			for (size_t channelId = 0; channelId < 3; channelId++)
+			{
 				species.mainColor[channelId] = stof(speciesParams.at(channelId));
-
-			for (size_t channelId = 0; channelId < 3; channelId++)
 				species.edgeColor[channelId] = stof(speciesParams.at(channelId + 3));
+			}
 
 			species.moveSpeed = stof(speciesParams.at(6));
 			species.turnSpeed = stof(speciesParams.at(7));

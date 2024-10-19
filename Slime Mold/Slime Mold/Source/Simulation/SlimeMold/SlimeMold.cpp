@@ -3,6 +3,8 @@
 #include <ctime>
 #include <vector>
 
+#include "Interface/Interface.h"
+#include "Settings/MainSettings.h"
 #include "Settings/Colony/SlimeCell.h"
 #include "Settings/Colony/ColonySettings.h"
 #include "Settings/Texture/WrapSettings.h"
@@ -130,6 +132,18 @@ void SlimeMold::ApplyTextureSettings()
 {
 	displayTexture->SetWrap(WrapSettings::GetSelectedValue());
 	displayTexture->SetFilter(FilterSettings::GetSelectedValue());
+}
+
+void SlimeMold::RandomizeColony()
+{
+	colonyBuilder->RandomizeColony();
+	Simulation::Restart(
+		MainSettings::PendingSimSize[0],
+		MainSettings::PendingSimSize[1],
+		MainSettings::PendingSimSeed
+	);
+
+	MainSettings::Gui->TriggerResize();
 }
 
 bool SlimeMold::IsPendingRestart() const

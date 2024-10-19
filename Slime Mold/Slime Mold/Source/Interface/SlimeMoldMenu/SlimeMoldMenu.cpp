@@ -22,6 +22,7 @@ void SlimeMoldMenu::Render()
 		if (CollapsingHeader("Slime Mold"))
 		{
 			PushItemWidth(-1);
+			RenderRandomizeButton();
 			Checkbox("Show Colony Menu", &SlimeMoldSettings::ShowColonyMenu);
 			RenderParameterCombo("Wrap", WrapSettings::SelectedSetting, WrapSettings::Labels);
 			RenderParameterCombo("Filter", FilterSettings::SelectedSetting, FilterSettings::Labels);
@@ -30,6 +31,12 @@ void SlimeMoldMenu::Render()
 	}
 
 	End();
+}
+
+void SlimeMoldMenu::RenderRandomizeButton()
+{
+	if (Button("Randomize", ImVec2(-1, 0)))
+		slimeSim->RandomizeColony();
 }
 
 void SlimeMoldMenu::RenderParameterCombo(std::string title,

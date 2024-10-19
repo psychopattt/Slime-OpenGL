@@ -17,6 +17,7 @@ class SlimeMold : public Simulation
 		void Initialize(int width, int height, unsigned int seed = 0) override;
 		void ApplyShaderSettings();
 		void ApplyTextureSettings();
+		void RandomizeColony();
 		bool IsPendingRestart() const;
 		void SetPendingRestart();
 		void Restart() override;

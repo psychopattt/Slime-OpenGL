@@ -13,6 +13,7 @@ class ColonyBuilder
 		ColonyBuilder();
 		std::vector<SlimeCell> BuildColony(unsigned int width,
 			unsigned int height, int totalCells);
+		void RandomizeColony();
 
 	private:
 		float missileAngle = 0;
@@ -21,12 +22,11 @@ class ColonyBuilder
 		unsigned int smallestDimension = 0;
 
 		std::mt19937 randomEngine;
-		std::uniform_real_distribution<float> randomDistribution;
+		std::uniform_real_distribution<float> randomPercent;
 
 		void GenerateSettings(unsigned int width, unsigned int height);
 		void BuildSpecies(std::vector<SlimeCell>& cells, int speciesIndex, 
 			SpeciesSettings& species, unsigned int width, unsigned int height);
-
 		void GenerateCellSpawn(SlimeCell& cell, SpawnMode spawnMode,
 			unsigned int width, unsigned int height);
 

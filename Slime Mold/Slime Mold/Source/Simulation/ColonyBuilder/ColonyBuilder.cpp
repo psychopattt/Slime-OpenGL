@@ -5,12 +5,14 @@
 #include "Settings/SlimeMoldSettings.h"
 
 using std::vector;
+using randomInt = std::uniform_int_distribution<int>;
+using randomFloat = std::uniform_real_distribution<float>;
 
 ColonyBuilder::ColonyBuilder()
 {
 	std::random_device randomDevice;
 	randomEngine = std::mt19937(randomDevice());
-	randomDistribution = std::uniform_real_distribution<float>(0, 1);
+	randomPercent = randomFloat(0, 1);
 }
 
 void ColonyBuilder::GenerateSettings(unsigned int width, unsigned int height)
@@ -110,6 +112,35 @@ void ColonyBuilder::GenerateCellSpawn(SlimeCell& cell, SpawnMode spawnMode,
 	}
 }
 
+void ColonyBuilder::RandomizeColony()
+{
+	for (int i = 0; i < Colony.size(); i++)
+	{
+		Colony[i].enabled = i == 0 || randomInt(0, 1)(randomEngine) == 0;
+
+		if (!Colony[i].enabled)
+			continue;
+
+		for (int channelId = 0; channelId < 3; channelId++)
+		{
+			Colony[i].mainColor[channelId] = Random01();
+			Colony[i].edgeColor[channelId] = Random01();
+		}
+
+		Colony[i].moveSpeed = randomFloat(1, 100)(randomEngine);
+		Colony[i].turnSpeed = randomFloat(0.1f, 10)(randomEngine);
+		Colony[i].sensorSize = randomInt(1, 3)(randomEngine);
+		Colony[i].sensorOffset = randomFloat(-30, 100)(randomEngine);
+		Colony[i].sensorAngleDegrees = randomFloat(1, 100)(randomEngine);
+		Colony[i].trailWeight = randomFloat(1, 20)(randomEngine);
+		Colony[i].cellCount = randomInt(1000, 1000000)(randomEngine);
+		Colony[i].spawnMode = SpawnMode(randomInt(0, SpawnMode::Missile)(randomEngine));
+	}
+
+	SlimeMoldSettings::DiffuseRate = randomFloat(1, 40)(randomEngine);
+	SlimeMoldSettings::DecayRate = randomFloat(0.01f, 3)(randomEngine);
+}
+
 void ColonyBuilder::RandomCirclePosition(float* position, float* center, float radius)
 {
 	float distanceFromCenter = radius * sqrt(Random01());
@@ -121,5 +152,5 @@ void ColonyBuilder::RandomCirclePosition(float* position, float* center, float r
 
 float ColonyBuilder::Random01()
 {
-	return randomDistribution(randomEngine);
+	return randomPercent(randomEngine);
 }

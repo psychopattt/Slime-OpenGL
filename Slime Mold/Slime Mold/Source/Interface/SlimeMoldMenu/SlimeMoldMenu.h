@@ -13,6 +13,7 @@ class SlimeMoldMenu : public ImGuiWindow
 	private:
 		class SlimeMold* slimeSim = nullptr;
 
+		void RenderRandomizeButton();
 		void RenderParameterCombo(std::string title,
 			int& parameter, const char* labels);
 };
