@@ -12,6 +12,7 @@ Demo video available [here](https://youtu.be/3Hl5o2H3vxo)
   - Main color and edge color
 - Load colony presets
 - Copy and load custom colonies
+- Generate random colonies (R)
 - Modify display wrap mode and filtering
 - All features of [OCSFW](https://github.com/psychopattt/OCSFW?tab=readme-ov-file#features)
 
