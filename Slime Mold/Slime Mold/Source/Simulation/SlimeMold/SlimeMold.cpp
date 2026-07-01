@@ -67,9 +67,9 @@ void SlimeMold::InitializeSlimeShader()
 {
 	slimeShader = make_unique<ComputeShader>("Slime", totalCells);
 	slimeShader->SetTextureBinding("trailTexture", trailTexture->GetId());
-	slimeShader->SetInt("userSeed", seed);
-	slimeShader->SetInt("height", height);
-	slimeShader->SetInt("width", width);
+	slimeShader->SetUniform("userSeed", seed);
+	slimeShader->SetUniform("height", height);
+	slimeShader->SetUniform("width", width);
 }
 
 void SlimeMold::InitializeDiffuseShader()
@@ -77,8 +77,8 @@ void SlimeMold::InitializeDiffuseShader()
 	diffuseShader = make_unique<ComputeShader>("Diffuse", width, height);
 	diffuseShader->SetTextureBinding("trailTexture", trailTexture->GetId());
 	diffuseShader->SetTextureBinding("diffusedTrailTexture", diffusedTrailTexture->GetId());
-	diffuseShader->SetInt("height", height);
-	diffuseShader->SetInt("width", width);
+	diffuseShader->SetUniform("height", height);
+	diffuseShader->SetUniform("width", width);
 }
 
 void SlimeMold::InitializeColorShader()
@@ -86,8 +86,8 @@ void SlimeMold::InitializeColorShader()
 	colorShader = make_unique<ComputeShader>("Color", width, height);
 	colorShader->SetTextureBinding("trailTexture", trailTexture->GetId());
 	colorShader->SetTextureBinding("displayTexture", displayTexture->GetId());
-	colorShader->SetInt("height", height);
-	colorShader->SetInt("width", width);
+	colorShader->SetUniform("height", height);
+	colorShader->SetUniform("width", width);
 }
 
 void SlimeMold::InitializeCopyShader()
@@ -101,7 +101,7 @@ void SlimeMold::InitializeColony()
 {
 	std::vector<SlimeCell> cells = colonyBuilder->BuildColony(width, height, totalCells);
 	cellBuffer = make_unique<ComputeBuffer>(cells.data(), cells.size() * sizeof(cells[0]));
-	slimeShader->SetInt("cellCount", static_cast<unsigned int>(cells.size()));
+	slimeShader->SetUniform("cellCount", static_cast<unsigned int>(cells.size()));
 	slimeShader->SetBufferBinding("slimeCells", cellBuffer->GetId());
 }
 
@@ -122,10 +122,10 @@ void SlimeMold::ApplyShaderSettings()
 	slimeShader->SetBufferBinding("colonySettings", colonyBuffer->GetId());
 
 	colorShader->SetBufferBinding("colonySettings", colonyBuffer->GetId());
-	colorShader->SetInt("colonySize", static_cast<unsigned int>(enabledSpecies.size()));
+	colorShader->SetUniform("colonySize", static_cast<unsigned int>(enabledSpecies.size()));
 
-	diffuseShader->SetFloat("diffuseRate", SlimeMoldSettings::DiffuseRate);
-	diffuseShader->SetFloat("decayRate", SlimeMoldSettings::DecayRate);
+	diffuseShader->SetUniform("diffuseRate", SlimeMoldSettings::DiffuseRate);
+	diffuseShader->SetUniform("decayRate", SlimeMoldSettings::DecayRate);
 }
 
 void SlimeMold::ApplyTextureSettings()
@@ -143,7 +143,7 @@ void SlimeMold::RandomizeColony()
 		MainSettings::PendingSimSeed
 	);
 
-	MainSettings::Gui->TriggerResize();
+	MainSettings::Gui->NotifyRestart();
 }
 
 bool SlimeMold::IsPendingRestart() const
@@ -164,7 +164,7 @@ void SlimeMold::Restart()
 void SlimeMold::Execute()
 {
 	unsigned int seconds = static_cast<unsigned int>(time(nullptr));
-	slimeShader->SetInt("seed", seconds);
+	slimeShader->SetUniform("seed", seconds);
 	slimeShader->Execute();
 	diffuseShader->Execute();
 	copyShader->Execute();
