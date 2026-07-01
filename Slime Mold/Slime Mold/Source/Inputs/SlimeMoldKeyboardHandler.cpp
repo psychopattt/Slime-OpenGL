@@ -11,7 +11,7 @@ void SlimeMoldKeyboardHandler::HandleKeyboard(GLFWwindow* window,
 {
 	KeyboardHandler::HandleKeyboard(window, key, scanCode, action, mods);
 
-	if (!ImGui::GetIO().WantCaptureKeyboard)
+	if (!ImGui::GetIO().WantTextInput)
 		ApplyRandomize(key, action);
 }
 
