@@ -35,7 +35,7 @@ void SlimeMoldMenu::Render()
 
 void SlimeMoldMenu::RenderRandomizeButton()
 {
-	if (Button("Randomize", ImVec2(-1, 0)))
+	if (Button("Randomize [R]", ImVec2(-1, 0)))
 		slimeSim->RandomizeColony();
 }
 
