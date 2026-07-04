@@ -5,8 +5,6 @@
 
 #include "Interface/ImGui/ImGuiWindow/ImGuiWindow.h"
 
-using std::string;
-
 struct SpeciesSettings;
 
 class ColonyMenu : public ImGuiWindow
@@ -34,5 +32,5 @@ class ColonyMenu : public ImGuiWindow
 		void RenderSensorsSection(SpeciesSettings& species);
 		void RenderColorSection(SpeciesSettings& species);
 
-		void LoadColony(string colonyString);
+		void LoadColony(std::string colonyString);
 };

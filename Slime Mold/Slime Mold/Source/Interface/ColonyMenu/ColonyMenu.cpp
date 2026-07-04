@@ -27,18 +27,16 @@ void ColonyMenu::Initialize()
 
 void ColonyMenu::Render()
 {
-	using SlimeMoldSettings::ShowColonyMenu;
-
-	if (!ShowColonyMenu)
+	if (!SlimeMoldSettings::ShowColonyMenu)
 		return;
 
 	RenderLoadModal();
 	SetNextWindowPos(ImVec2(270, 10), ImGuiCond_FirstUseEver);
-	SetNextWindowSize(ImVec2(311, -1), ImGuiCond_FirstUseEver);
+	SetNextWindowSize(ImVec2(320, -1), ImGuiCond_FirstUseEver);
 	int windowFlags = ImGuiWindowFlags_MenuBar | (slimeSim->IsPendingRestart() ?
 		ImGuiWindowFlags_UnsavedDocument : ImGuiWindowFlags_None);
 
-	if (Begin("Colony Settings", &ShowColonyMenu, windowFlags))
+	if (Begin("Colony Settings", &SlimeMoldSettings::ShowColonyMenu, windowFlags))
 	{
 		RenderWindowMenuBar();
 		PushItemWidth(-1);
@@ -73,7 +71,7 @@ void ColonyMenu::RenderWindowMenuBar()
 		{
 			for (int i = 0; i < ColonyPresets.size(); i++)
 			{
-				if (MenuItem(("Colony " + std::to_string(i + 1)).data()))
+				if (MenuItem(("Preset " + std::to_string(i + 1)).c_str()))
 					LoadColony(ColonyPresets[i]);
 			}
 
@@ -85,7 +83,7 @@ void ColonyMenu::RenderWindowMenuBar()
 			OpenPopup("ColonyCopied");
 			SetClipboardText(colonyCodec->EncodeColony(
 				vector(Colony.begin(), Colony.end())
-			).data());
+			).c_str());
 		}
 
 		if (BeginPopup("ColonyCopied", ImGuiWindowFlags_NoInputs))
@@ -104,12 +102,8 @@ void ColonyMenu::RenderWindowMenuBar()
 void ColonyMenu::RenderSpeciesTab(int speciesId)
 {
 	SpeciesSettings& species = Colony[speciesId];
-	string tabLabel = "Species " + std::to_string(speciesId + 1);
+	std::string tabLabel = "Species " + std::to_string(speciesId + 1);
 
-	ImVec2& itemSpacing = GetStyle().ItemSpacing;
-	PushStyleVar(ImGuiStyleVar_ItemSpacing,
-		ImVec2(itemSpacing.x, itemSpacing.y * 2));
-	
 	if (BeginTabItem(tabLabel.c_str()))
 	{
 		RenderTabPopup(speciesId);
@@ -128,10 +122,6 @@ void ColonyMenu::RenderSpeciesTab(int speciesId)
 			EndDisabled();
 
 		EndTabItem();
-	}
-	else
-	{
-		PopStyleVar();
 	}
 }
 
@@ -153,7 +143,7 @@ void ColonyMenu::RenderCopyMenu(int speciesId, bool copyDirection)
 		{
 			int sourceId = copyDirection ? i : speciesId;
 			int targetId = copyDirection ? speciesId : i;
-			string menuLabel = "Species " + std::to_string(i + 1);
+			std::string menuLabel = "Species " + std::to_string(i + 1);
 
 			if (i != speciesId && MenuItem(menuLabel.c_str()))
 			{
@@ -175,17 +165,20 @@ void ColonyMenu::RenderCopyMenu(int speciesId, bool copyDirection)
 
 void ColonyMenu::RenderEnableSection(struct SpeciesSettings& species)
 {
+	BeginGroup();
+
 	if (Checkbox("##checkboxEnabled", &species.enabled))
 		slimeSim->SetPendingRestart();
-
-	SetItemTooltip("Requires Restart");
-	SameLine();
 	
+	SameLine();
+	PushStyleVarY(ImGuiStyleVar_ItemSpacing, GetStyle().FramePadding.y * 2);
+
 	if (Selectable("Enabled", &species.enabled))
 		slimeSim->SetPendingRestart();
 
-	SetItemTooltip("Requires Restart");
 	PopStyleVar();
+	EndGroup();
+	SetItemTooltip("Requires Restart");
 }
 
 void ColonyMenu::RenderCellSection(SpeciesSettings& species)
@@ -258,7 +251,7 @@ void ColonyMenu::RenderColorSection(SpeciesSettings& species)
 	}
 }
 
-void ColonyMenu::LoadColony(string colonyString)
+void ColonyMenu::LoadColony(std::string colonyString)
 {
 	std::vector<SpeciesSettings> loadedColony =
 		colonyCodec->DecodeColony(colonyString);
