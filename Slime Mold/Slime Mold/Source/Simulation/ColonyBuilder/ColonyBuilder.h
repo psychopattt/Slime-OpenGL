@@ -11,8 +11,7 @@ class ColonyBuilder
 {
 	public:
 		ColonyBuilder();
-		std::vector<SlimeCell> BuildColony(unsigned int width,
-			unsigned int height, int totalCells);
+		std::vector<SlimeCell> BuildColony(unsigned int width, unsigned int height);
 		void RandomizeColony();
 
 	private:

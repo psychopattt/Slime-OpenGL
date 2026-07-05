@@ -13,6 +13,7 @@
 #include "Shaders/Buffers/Texture/Texture.h"
 #include "Shaders/ComputeShader/ComputeShader.h"
 #include "Shaders/Buffers/ComputeBuffer/ComputeBuffer.h"
+#include "Shaders/Buffers/DualComputeBuffer/DualComputeBuffer.h"
 #include "Simulation/SimulationDrawer/SimulationDrawer.h"
 #include "Simulation/ColonyBuilder/ColonyBuilder.h"
 
@@ -27,46 +28,36 @@ void SlimeMold::Initialize(int width, int height, unsigned int seed)
 {
 	Simulation::Initialize(width, height, seed);
 
-	InitializeSettings();
-	InitializeTextures();
+	restartPending = false;
+	simDrawer = make_unique<SimulationDrawer>();
+	displayTexture = make_unique<Texture>(width, height);
+
 	InitializeShaders();
-	InitializeColony();
 	ApplyShaderSettings();
 	ApplyTextureSettings();
-	simDrawer = make_unique<SimulationDrawer>();
-}
-
-void SlimeMold::InitializeSettings()
-{
-	restartPending = false;
-	totalCells = 0;
-
-	for (SpeciesSettings& species : Colony)
-	{
-		if (species.enabled)
-			totalCells += species.cellCount;
-	}
-}
-
-void SlimeMold::InitializeTextures()
-{
-	trailTexture = make_unique<Texture>(width, height);
-	diffusedTrailTexture = make_unique<Texture>(width, height);
-	displayTexture = make_unique<Texture>(width, height);
 }
 
 void SlimeMold::InitializeShaders()
 {
+	std::vector<float> trailData(4 * width * height);
+	trailBuffers = make_unique<DualComputeBuffer>(
+		trailData.data(), trailData.size() * sizeof(trailData[0])
+	);
+
 	InitializeSlimeShader();
 	InitializeDiffuseShader();
 	InitializeColorShader();
-	InitializeCopyShader();
 }
 
 void SlimeMold::InitializeSlimeShader()
 {
-	slimeShader = make_unique<ComputeShader>("Slime", totalCells);
-	slimeShader->SetTextureBinding("trailTexture", trailTexture->GetId());
+	std::vector<SlimeCell> cells = colonyBuilder->BuildColony(width, height);
+	cellBuffer = make_unique<ComputeBuffer>(cells.data(), cells.size() * sizeof(cells[0]));
+	unsigned int cellCount = static_cast<unsigned int>(cells.size());
+
+	slimeShader = make_unique<ComputeShader>("Slime", cellCount);
+	slimeShader->SetBufferBinding("slimeCells", cellBuffer->GetId());
+	slimeShader->SetUniform("cellCount", cellCount);
 	slimeShader->SetUniform("userSeed", seed);
 	slimeShader->SetUniform("height", height);
 	slimeShader->SetUniform("width", width);
@@ -75,8 +66,6 @@ void SlimeMold::InitializeSlimeShader()
 void SlimeMold::InitializeDiffuseShader()
 {
 	diffuseShader = make_unique<ComputeShader>("Diffuse", width, height);
-	diffuseShader->SetTextureBinding("trailTexture", trailTexture->GetId());
-	diffuseShader->SetTextureBinding("diffusedTrailTexture", diffusedTrailTexture->GetId());
 	diffuseShader->SetUniform("height", height);
 	diffuseShader->SetUniform("width", width);
 }
@@ -84,25 +73,9 @@ void SlimeMold::InitializeDiffuseShader()
 void SlimeMold::InitializeColorShader()
 {
 	colorShader = make_unique<ComputeShader>("Color", width, height);
-	colorShader->SetTextureBinding("trailTexture", trailTexture->GetId());
 	colorShader->SetTextureBinding("displayTexture", displayTexture->GetId());
 	colorShader->SetUniform("height", height);
 	colorShader->SetUniform("width", width);
-}
-
-void SlimeMold::InitializeCopyShader()
-{
-	copyShader = make_unique<ComputeShader>("Copy", width, height);
-	copyShader->SetTextureBinding("source", diffusedTrailTexture->GetId());
-	copyShader->SetTextureBinding("target", trailTexture->GetId());
-}
-
-void SlimeMold::InitializeColony()
-{
-	std::vector<SlimeCell> cells = colonyBuilder->BuildColony(width, height, totalCells);
-	cellBuffer = make_unique<ComputeBuffer>(cells.data(), cells.size() * sizeof(cells[0]));
-	slimeShader->SetUniform("cellCount", static_cast<unsigned int>(cells.size()));
-	slimeShader->SetBufferBinding("slimeCells", cellBuffer->GetId());
 }
 
 void SlimeMold::ApplyShaderSettings()
@@ -163,18 +136,24 @@ void SlimeMold::Restart()
 
 void SlimeMold::Execute()
 {
+	drawPending = true;
+	trailBuffers->Swap();
+
 	unsigned int seconds = static_cast<unsigned int>(time(nullptr));
+	slimeShader->SetBufferBinding("trailBuffer", trailBuffers->GetId(0));
 	slimeShader->SetUniform("seed", seconds);
 	slimeShader->Execute();
+
+	diffuseShader->SetBufferBinding("trailBuffer", trailBuffers->GetId(0));
+	diffuseShader->SetBufferBinding("diffusedTrailBuffer", trailBuffers->GetId(1));
 	diffuseShader->Execute();
-	copyShader->Execute();
-	drawPending = true;
 }
 
 void SlimeMold::Draw()
 {
 	if (drawPending)
 	{
+		colorShader->SetBufferBinding("trailBuffer", trailBuffers->GetId(1));
 		colorShader->Execute();
 		drawPending = false;
 	}

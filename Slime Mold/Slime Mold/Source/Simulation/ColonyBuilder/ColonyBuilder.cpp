@@ -29,26 +29,19 @@ void ColonyBuilder::GenerateSettings(unsigned int width, unsigned int height)
 	}
 }
 
-vector<SlimeCell> ColonyBuilder::BuildColony(unsigned int width,
-	unsigned int height, int totalCells)
+vector<SlimeCell> ColonyBuilder::BuildColony(unsigned int width, unsigned int height)
 {
 	GenerateSettings(width, height);
 
 	int speciesIndex = 0;
 	vector<SlimeCell> cells;
-	cells.reserve(totalCells);
 
 	for (SpeciesSettings& species : Colony)
 	{
 		species.wasEnabled = species.enabled;
 
 		if (species.enabled)
-		{
-			BuildSpecies(
-				cells, speciesIndex++,
-				species, width, height
-			);
-		}
+			BuildSpecies(cells, speciesIndex++, species, width, height);
 	}
 
 	return cells;
@@ -57,6 +50,8 @@ vector<SlimeCell> ColonyBuilder::BuildColony(unsigned int width,
 void ColonyBuilder::BuildSpecies(vector<SlimeCell>& cells, int speciesIndex,
 	SpeciesSettings& species, unsigned int width, unsigned int height)
 {
+	cells.reserve(cells.size() + species.cellCount);
+
 	for (int i = 0; i < std::size(species.mask); i++)
 		species.mask[i] = speciesIndex == i;
 

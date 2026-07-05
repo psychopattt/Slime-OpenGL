@@ -2,8 +2,7 @@
 
 layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
 
-struct SpeciesSettings
-{
+struct SpeciesSettings {
     vec4 mask;
     vec4 mainColor;
     vec4 edgeColor;
@@ -18,16 +17,19 @@ struct SpeciesSettings
     float trailWeight;
 };
 
-uniform uint colonySize;
-layout(std430) restrict readonly buffer colonySettings
-{
+layout(std430) restrict readonly buffer colonySettings {
     SpeciesSettings Colony[];
 };
 
-layout(rgba32f) restrict readonly uniform image2D trailTexture;
+layout(std430) restrict readonly buffer trailBuffer {
+    vec4 Trail[];
+};
+
 restrict writeonly uniform image2D displayTexture;
-uniform int height;
+
 uniform int width;
+uniform int height;
+uniform uint colonySize;
 
 void main()
 {
@@ -36,7 +38,7 @@ void main()
     if (position.x >= width || position.y >= height)
         return;
 
-    vec4 trailData = imageLoad(trailTexture, position);
+    vec4 trailData = Trail[position.y * width + position.x];
     vec4 color = vec4(0);
 
     for (uint i = 0; i < colonySize; i++)

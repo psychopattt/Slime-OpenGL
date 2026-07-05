@@ -210,7 +210,6 @@
   <ItemGroup>
     <None Include="OCSFW\Libraries\lib\glfw3.pdb" />
     <None Include="Source\Shaders\Color.glsl" />
-    <None Include="Source\Shaders\Copy.glsl" />
     <None Include="Source\Shaders\Diffuse.glsl" />
     <None Include="Source\Shaders\Slime.glsl" />
   </ItemGroup>

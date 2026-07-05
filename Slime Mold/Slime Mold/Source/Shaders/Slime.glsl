@@ -2,15 +2,13 @@
 
 layout(local_size_x = 16, local_size_y = 1, local_size_z = 1) in;
 
-struct SlimeCell
-{
+struct SlimeCell {
     vec2 position;
     float angle;
     int speciesIndex;
 };
 
-struct SpeciesSettings
-{
+struct SpeciesSettings {
     vec4 mask;
     vec4 mainColor;
     vec4 edgeColor;
@@ -25,23 +23,23 @@ struct SpeciesSettings
     float trailWeight;
 };
 
-layout(std430) restrict readonly buffer colonySettings
-{
+layout(std430) restrict readonly buffer colonySettings {
     SpeciesSettings Colony[];
 };
 
-uniform uint cellCount;
-layout(std430) restrict buffer slimeCells
-{
+layout(std430) restrict buffer slimeCells {
     SlimeCell Cells[];
+};
+
+layout(std430) restrict buffer trailBuffer {
+    vec4 Trail[];
 };
 
 uniform int width;
 uniform int height;
-layout(rgba32f) restrict uniform image2D trailTexture;
-
 uniform uint seed;
 uniform uint userSeed;
+uniform uint cellCount;
 const float globalSpeed = 0.02;
 const float tau = 6.2831853072;
 
@@ -78,13 +76,10 @@ float SenseTrail(SlimeCell cell, float sensorAngleOffset)
     {
         for (int offsetX = -sensorSize; offsetX <= sensorSize; offsetX++)
         {
-            ivec2 samplePosition = ivec2(
-                clamp(int(sensorPosition.x) + offsetX, 0, width - 1),
-                clamp(int(sensorPosition.y) + offsetY, 0, height - 1)
-            );
+            uint id = clamp(int(sensorPosition.y) + offsetY, 0, height - 1) *
+                width + clamp(int(sensorPosition.x) + offsetX, 0, width - 1);
 
-            vec4 trailData = imageLoad(trailTexture, samplePosition);
-            senseTotal += dot(senseWeight, trailData);
+            senseTotal += dot(senseWeight, Trail[id]);
         }
     }
 
@@ -134,13 +129,11 @@ void MoveCell(uint cellId, uint random)
     }
     else
     {
-        ivec2 newTrailCoords = ivec2(newPos);
-        vec4 oldTrailData = imageLoad(trailTexture, newTrailCoords);
-        vec4 newTrailData = min(vec4(1),
-            oldTrailData + species.mask * species.trailWeight * globalSpeed
-        );
+        uint newTrailId = int(newPos.y) * width + int(newPos.x);
+        vec4 newTrailData = species.mask * species.trailWeight *
+            globalSpeed + Trail[newTrailId];
 
-        imageStore(trailTexture, newTrailCoords, newTrailData);
+        Trail[newTrailId] = min(vec4(1), newTrailData);
     }
 
     Cells[cellId].position = newPos;
