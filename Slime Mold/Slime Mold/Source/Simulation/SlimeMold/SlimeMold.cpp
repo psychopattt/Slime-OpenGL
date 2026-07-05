@@ -168,15 +168,15 @@ void SlimeMold::Execute()
 	slimeShader->Execute();
 	diffuseShader->Execute();
 	copyShader->Execute();
-	simUpdated = true;
+	drawPending = true;
 }
 
 void SlimeMold::Draw()
 {
-	if (simUpdated)
+	if (drawPending)
 	{
 		colorShader->Execute();
-		simUpdated = false;
+		drawPending = false;
 	}
 	
 	simDrawer->Draw(displayTexture.get());

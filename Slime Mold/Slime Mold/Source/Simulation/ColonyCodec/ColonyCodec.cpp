@@ -7,20 +7,20 @@
 #include "Settings/SlimeMoldSettings.h"
 #include "Settings/Colony/ColonySettings.h"
 
-using std::string, std::to_string, std::vector;
+using std::string, std::vector;
 
 string ColonyCodec::FormatNumber(int number) const
 {
-	return to_string(number);
+	return std::to_string(number);
 }
 
 string ColonyCodec::FormatNumber(float number) const
 {
-	string str = to_string(number);
-	str.erase(str.find_last_not_of('0') + 1);
-	str.erase(str.find_last_not_of('.') + 1);
+	string text = std::to_string(number);
+	text.erase(text.find_last_not_of('0') + 1);
+	text.erase(text.find_last_not_of('.') + 1);
 
-	return str;
+	return text;
 }
 
 string ColonyCodec::EncodeColony(const vector<SpeciesSettings>& colony) const

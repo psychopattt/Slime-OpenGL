@@ -26,7 +26,7 @@ class SlimeMold : public Simulation
 		~SlimeMold();
 
 	private:
-		bool simUpdated = false;
+		bool drawPending = false;
 		bool restartPending = false;
 		unsigned int totalCells = 0;
 

@@ -49,7 +49,7 @@ bool LoadColonyModal::HasNewResult() const
 	return hasNewResult;
 }
 
-const string& LoadColonyModal::GetResult()
+const std::string& LoadColonyModal::GetResult()
 {
 	hasNewResult = false;
 	return result;
