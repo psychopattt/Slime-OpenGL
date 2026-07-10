@@ -27,18 +27,17 @@ layout(std430) restrict readonly buffer trailBuffer {
 
 restrict writeonly uniform image2D displayTexture;
 
-uniform int width;
-uniform int height;
+uniform ivec2 size;
 uniform uint colonySize;
 
 void main()
 {
     ivec2 position = ivec2(gl_GlobalInvocationID.xy);
 
-    if (position.x >= width || position.y >= height)
+    if (position.x >= size.x || position.y >= size.y)
         return;
 
-    vec4 trailData = Trail[position.y * width + position.x];
+    vec4 trailData = Trail[position.y * size.x + position.x];
     vec4 color = vec4(0);
 
     for (uint i = 0; i < colonySize; i++)

@@ -35,8 +35,7 @@ layout(std430) restrict buffer trailBuffer {
     vec4 Trail[];
 };
 
-uniform int width;
-uniform int height;
+uniform ivec2 size;
 uniform uint seed;
 uniform uint userSeed;
 uniform uint cellCount;
@@ -76,8 +75,8 @@ float SenseTrail(SlimeCell cell, float sensorAngleOffset)
     {
         for (int offsetX = -sensorSize; offsetX <= sensorSize; offsetX++)
         {
-            uint id = clamp(int(sensorPosition.y) + offsetY, 0, height - 1) *
-                width + clamp(int(sensorPosition.x) + offsetX, 0, width - 1);
+            uint id = clamp(int(sensorPosition.y) + offsetY, 0, size.y - 1) *
+                size.x + clamp(int(sensorPosition.x) + offsetX, 0, size.x - 1);
 
             senseTotal += dot(senseWeight, Trail[id]);
         }
@@ -119,17 +118,14 @@ void MoveCell(uint cellId, uint random)
     vec2 newPos = cell.position + direction * species.moveSpeed * globalSpeed;
 
     // Bounce on boundaries
-    if (newPos.x < 0 || newPos.x >= width || newPos.y < 0 || newPos.y >= height)
+    if (newPos.x < 0 || newPos.x >= size.x || newPos.y < 0 || newPos.y >= size.y)
     {
-        float randomAngle = NormalizeUnsignedInt(random) * tau;
-        Cells[cellId].angle = randomAngle;
-
-        newPos.x = clamp(newPos.x, 0, width - 1);
-        newPos.y = clamp(newPos.y, 0, height - 1);
+        newPos = clamp(newPos, vec2(0), size - 1);
+        Cells[cellId].angle = NormalizeUnsignedInt(random) * tau;
     }
     else
     {
-        uint newTrailId = int(newPos.y) * width + int(newPos.x);
+        uint newTrailId = int(newPos.y) * size.x + int(newPos.x);
         vec4 newTrailData = species.mask * species.trailWeight *
             globalSpeed + Trail[newTrailId];
 
@@ -147,7 +143,7 @@ void main()
         return;
 
     vec2 position = Cells[cellId].position;
-    uint positionId = uint(position.y * width + position.x);
+    uint positionId = uint(position.y * size.x + position.x);
     uint random = Random(positionId + Random(seed * 100000 + cellId));
 
     SteerCell(cellId, random);

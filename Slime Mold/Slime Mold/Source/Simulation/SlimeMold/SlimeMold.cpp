@@ -58,24 +58,21 @@ void SlimeMold::InitializeSlimeShader()
 	slimeShader = make_unique<ComputeShader>("Slime", cellCount);
 	slimeShader->SetBufferBinding("slimeCells", cellBuffer->GetId());
 	slimeShader->SetUniform("cellCount", cellCount);
+	slimeShader->SetUniform("size", width, height);
 	slimeShader->SetUniform("userSeed", seed);
-	slimeShader->SetUniform("height", height);
-	slimeShader->SetUniform("width", width);
 }
 
 void SlimeMold::InitializeDiffuseShader()
 {
 	diffuseShader = make_unique<ComputeShader>("Diffuse", width, height);
-	diffuseShader->SetUniform("height", height);
-	diffuseShader->SetUniform("width", width);
+	diffuseShader->SetUniform("size", width, height);
 }
 
 void SlimeMold::InitializeColorShader()
 {
 	colorShader = make_unique<ComputeShader>("Color", width, height);
 	colorShader->SetTextureBinding("displayTexture", displayTexture->GetId());
-	colorShader->SetUniform("height", height);
-	colorShader->SetUniform("width", width);
+	colorShader->SetUniform("size", width, height);
 }
 
 void SlimeMold::ApplyShaderSettings()
