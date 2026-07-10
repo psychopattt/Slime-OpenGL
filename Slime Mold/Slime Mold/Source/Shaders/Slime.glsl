@@ -39,7 +39,7 @@ uniform ivec2 size;
 uniform uint seed;
 uniform uint userSeed;
 uniform uint cellCount;
-const float globalSpeed = 0.02;
+uniform float globalSpeed;
 const float tau = 6.2831853072;
 
 uint Random(uint state)

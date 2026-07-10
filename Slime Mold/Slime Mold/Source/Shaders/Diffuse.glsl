@@ -13,7 +13,7 @@ layout(std430) restrict writeonly buffer diffusedTrailBuffer {
 uniform ivec2 size;
 uniform float decayRate;
 uniform float diffuseRate;
-const float globalSpeed = 0.02;
+uniform float globalSpeed;
 
 vec4 GetAverageNeighborTrail(ivec2 position)
 {
